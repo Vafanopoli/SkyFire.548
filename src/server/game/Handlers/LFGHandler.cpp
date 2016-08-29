@@ -523,30 +523,29 @@ void WorldSession::HandleLfgGetStatus(WorldPacket& /*recvData*/)
 
 void WorldSession::SendLfgUpdateStatus(lfg::LfgUpdateData const& updateData, bool party)
 {
-    bool join = false;
-    bool queued = false;
-    uint8 size = uint8(updateData.dungeons.size());
+	bool join = false;
+	bool queued = false;
+	bool quit = false;
+	uint8 size = uint8(updateData.dungeons.size());
+	lfg::LfgQueueInfo* info = NULL;
     ObjectGuid guid = _player->GetGUID();
     time_t joinTime = sLFGMgr->GetQueueJoinTime(_player->GetGUID());
     uint32 queueId = sLFGMgr->GetQueueId(_player->GetGUID());
 
     switch (updateData.updateType)
     {
-        case lfg::LFG_UPDATETYPE_JOIN_QUEUE_INITIAL:            // Joined queue outside the dungeon
-            join = true;
-            break;
-        case lfg::LFG_UPDATETYPE_JOIN_QUEUE:
+        case lfg::LFG_UPDATETYPE_JOIN_QUEUE:            // Joined queue outside the dungeon
+			queued = true;
         case lfg::LFG_UPDATETYPE_ADDED_TO_QUEUE:                // Rolecheck Success
             join = true;
-            queued = true;
-            break;
+			break;
+		case lfg::LFG_UPDATETYPE_UPDATE_STATUS:
+			join = true;
+			queued = true;
+			break;
         case lfg::LFG_UPDATETYPE_PROPOSAL_BEGIN:
-            join = true;
-            break;
-        case lfg::LFG_UPDATETYPE_UPDATE_STATUS:
-            join = updateData.state != lfg::LFG_STATE_ROLECHECK && updateData.state != lfg::LFG_STATE_NONE;
-            queued = updateData.state == lfg::LFG_STATE_QUEUED;
-            break;
+            quit = false;
+			break;
         default:
             break;
     }
@@ -554,40 +553,60 @@ void WorldSession::SendLfgUpdateStatus(lfg::LfgUpdateData const& updateData, boo
     TC_LOG_DEBUG("lfg", "SMSG_LFG_UPDATE_STATUS %s updatetype: %u, party %s",
         GetPlayerInfo().c_str(), updateData.updateType, party ? "true" : "false");
 
-    WorldPacket data(SMSG_LFG_UPDATE_STATUS, 1 + 8 + 3 + 2 + 1 + updateData.comment.length() + 4 + 4 + 1 + 1 + 1 + 4 + size);
-    data.WriteBit(guid[1]);
-    data.WriteBit(party);
-    data.WriteBits(size, 24);
-    data.WriteBit(guid[6]);
-    data.WriteBit(size > 0);                               // Extra info
-    data.WriteBits(updateData.comment.length(), 9);
-    data.WriteBit(guid[4]);
-    data.WriteBit(guid[7]);
-    data.WriteBit(guid[2]);
-    data.WriteBit(join);                                   // LFG Join
-    data.WriteBit(guid[0]);
-    data.WriteBit(guid[3]);
-    data.WriteBit(guid[5]);
-    data.WriteBit(queued);                                 // Join the queue
+	WorldPacket data(SMSG_LFG_UPDATE_STATUS, 1 + 8 + 3 + 2 + 1 + updateData.comment.length() + 4 + 4 + 1 + 1 + 1 + 4 + size);
+	data.WriteBits(updateData.comment.length(), 8);
 
-    data << uint8(updateData.updateType);                  // Lfg Update type
-    data.WriteString(updateData.comment);
-    data << uint32(queueId);                               // Queue Id
-    data << uint32(joinTime);                              // Join date
-    data.WriteByteSeq(guid[6]);
-    for (uint8 i = 0; i < 3; ++i)
-        data << uint8(0);                                  // unk - Always 0
+	data.WriteBit(party);
+	data.WriteBit(true);
+	data.WriteBits(updateData.dungeons.size(), 22);
+	data.WriteBit(guid[2]);
+	data.WriteBit(guid[3]);
+	data.WriteBit(guid[1]);
+	data.WriteBit(join);
+	data.WriteBit(guid[7]);
+	data.WriteBit(guid[6]);
+	data.WriteBit(guid[0]);
+	data.WriteBit(0);
+	data.WriteBit(quit);
 
-    data.WriteByteSeq(guid[1]);
-    data.WriteByteSeq(guid[2]);
-    data.WriteByteSeq(guid[4]);
-    data.WriteByteSeq(guid[3]);
-    data.WriteByteSeq(guid[5]);
-    data.WriteByteSeq(guid[0]);
-    data << uint32(3);
-    data.WriteByteSeq(guid[7]);
-    for (lfg::LfgDungeonSet::const_iterator it = updateData.dungeons.begin(); it != updateData.dungeons.end(); ++it)
-        data << uint32(*it);
+	data.WriteBits(size, 24);
+	data.WriteBit(guid[5]);
+
+	data.WriteBit(guid[4]);
+
+	data.WriteByteSeq(guid[3]);
+
+	for (int i = 0; i < 3; ++i)
+		data << uint8(0);
+
+	data.WriteByteSeq(guid[4]);
+
+	data.WriteByteSeq(guid[6]);
+
+	data << uint8(updateData.updateType);
+	data << uint32(info->roles[_player->GetGUID()]); // sure
+	data << uint32(_player->GetTeam());              // Queue Id
+
+	data.WriteByteSeq(guid[5]);
+
+	data.WriteString(updateData.comment);
+
+	data.WriteByteSeq(guid[2]);
+
+	for (auto i = updateData.dungeons.begin(); i != updateData.dungeons.end(); ++i)
+	{
+		LFGDungeonEntry const* dungeon = sLFGDungeonStore.LookupEntry(*i);
+		data << uint32(dungeon ? dungeon->Entry() : 0); // Dungeon
+	}
+
+	data.WriteByteSeq(guid[0]);
+	data.WriteByteSeq(guid[1]);
+
+	data << uint32(info->joinTime); // Join date
+	data << uint8(info->category);
+	data << uint32(3); // Flags
+
+	data.WriteByteSeq(guid[7]);
 
     SendPacket(&data);
 }
@@ -738,36 +757,36 @@ void WorldSession::SendLfgQueueStatus(lfg::LfgQueueStatusData const& queueData)
 
     ObjectGuid guid = _player->GetGUID();
     WorldPacket data(SMSG_LFG_QUEUE_STATUS, 4 + 4 + 4 + 4 + 4 + 4 + 1 + 1 + 1 + 4 + 4 + 4 + 4 + 8);
-    data.WriteBit(guid[3]);
-    data.WriteBit(guid[0]);
-    data.WriteBit(guid[2]);
-    data.WriteBit(guid[6]);
-    data.WriteBit(guid[5]);
-    data.WriteBit(guid[7]);
-    data.WriteBit(guid[1]);
     data.WriteBit(guid[4]);
+    data.WriteBit(guid[3]);
+    data.WriteBit(guid[5]);
+    data.WriteBit(guid[1]);
+    data.WriteBit(guid[2]);
+    data.WriteBit(guid[0]);
+    data.WriteBit(guid[6]);
+    data.WriteBit(guid[7]);
 
-    data.WriteByteSeq(guid[0]);
-    data << uint8(queueData.tanks);                        // Tanks needed
+	data << uint32(3);
+	data.WriteByteSeq(guid[0]);
+	data << uint32(queueData.queuedTime);                  // Player wait time in queue
+	data.WriteByteSeq(guid[4]);
+	data << int32(queueData.waitTime);                     // Wait Time
     data << int32(queueData.waitTimeTank);                 // Wait Tanks
-    data << uint8(queueData.healers);                      // Healers needed
+	data << uint8(queueData.tanks);                        // Tanks needed
     data << int32(queueData.waitTimeHealer);               // Wait Healers
-    data << uint8(queueData.dps);                          // Dps needed
+	data << uint8(queueData.healers);                      // Healers needed
     data << int32(queueData.waitTimeDps);                  // Wait Dps
-    data.WriteByteSeq(guid[4]);
-    data.WriteByteSeq(guid[6]);
-    data << int32(queueData.waitTime);                     // Wait Time
-    data << uint32(queueData.joinTime);                    // Join time
-    data << uint32(queueData.dungeonId);                   // Dungeon
-    data << uint32(queueData.queuedTime);                  // Player wait time in queue
-    data.WriteByteSeq(guid[5]);
+	data << uint8(queueData.dps);                          // Dps needed
+	data << uint32(queueData.joinTime);                    // Join time
+	data << uint32(queueData.queueId);                     // Queue Id
+	data.WriteByteSeq(guid[1]);
+	data << int32(queueData.waitTimeAvg);                  // Average Wait time
     data.WriteByteSeq(guid[7]);
+	data.WriteByteSeq(guid[2]);
+	data << uint32(queueData.dungeonId);                   // Dungeon
+    data.WriteByteSeq(guid[5]);
     data.WriteByteSeq(guid[3]);
-    data << uint32(queueData.queueId);                     // Queue Id
-    data.WriteByteSeq(guid[1]);
-    data.WriteByteSeq(guid[2]);
-    data << int32(queueData.waitTimeAvg);                  // Average Wait time
-    data << uint32(3);
+    data.WriteByteSeq(guid[6]);
 
     SendPacket(&data);
 }
