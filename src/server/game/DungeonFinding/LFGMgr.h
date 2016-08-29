@@ -143,6 +143,7 @@ typedef std::pair<LfgRewardContainer::const_iterator, LfgRewardContainer::const_
 typedef std::map<uint8, LfgDungeonSet> LfgCachedDungeonContainer;
 typedef std::map<uint64, LfgAnswer> LfgAnswerContainer;
 typedef std::map<uint64, LfgRoleCheck> LfgRoleCheckContainer;
+typedef std::map<uint64, LfgQueueInfo> LfgQueueInfoContainer;
 typedef std::map<uint32, LfgProposal> LfgProposalContainer;
 typedef std::map<uint64, LfgProposalPlayer> LfgProposalPlayerContainer;
 typedef std::map<uint64, LfgPlayerBoot> LfgPlayerBootContainer;
@@ -216,6 +217,20 @@ struct LfgReward
     uint32 maxLevel;
     uint32 firstQuest;
     uint32 otherQuest;
+};
+
+/// Stores player or group queue info
+struct LfgQueueInfo
+{
+	LfgQueueInfo() : joinTime(0), tanks(LFG_TANKS_NEEDED), healers(LFG_HEALERS_NEEDED), dps(LFG_DPS_NEEDED) {};
+	time_t joinTime;                                       ///< Player queue join time (to calculate wait times)
+	uint8 tanks;                                           ///< Tanks needed
+	uint8 healers;                                         ///< Healers needed
+	uint8 dps;                                             ///< Dps needed
+	LfgDungeonSet dungeons;                                ///< Selected Player/Group Dungeon/s
+	LfgRolesMap roles;                                     ///< Selected Player Role/s
+	uint8 type;
+	uint8 category;
 };
 
 /// Stores player data related to proposal to join
@@ -424,7 +439,7 @@ class LFGMgr
         static bool HasIgnore(uint64 guid1, uint64 guid2);
         /// Sends queue status to player
         static void SendLfgQueueStatus(uint64 guid, LfgQueueStatusData const& data);
-
+		
     private:
         uint8 GetTeam(uint64 guid);
         void RestoreState(uint64 guid, char const* debugMsg);
@@ -467,7 +482,7 @@ class LFGMgr
         LfgCachedDungeonContainer CachedDungeonMapStore;   ///< Stores all dungeons by groupType
         // Reward System
         LfgRewardContainer RewardMapStore;                 ///< Stores rewards for random dungeons
-        LFGDungeonContainer  LfgDungeonStore;
+		LFGDungeonContainer  LfgDungeonStore;
         // Rolecheck - Proposal - Vote Kicks
         LfgRoleCheckContainer RoleChecksStore;             ///< Current Role checks
         LfgProposalContainer ProposalsStore;               ///< Current Proposals
