@@ -126,7 +126,7 @@ class FlightPathMovementGenerator : public MovementGeneratorMedium< Player, Flig
         MovementGeneratorType GetMovementGeneratorType() { return FLIGHT_MOTION_TYPE; }
 
         TaxiPathNodeList const& GetPath() { return *i_path; }
-        uint32 GetPathAtMapEnd() const;
+        std::size_t GetPathAtMapEnd() const;
         bool HasArrived() const { return (i_currentNode >= i_path->size()); }
         void SetCurrentNodeAfterTeleport();
         void SkipCurrentNode() { ++i_currentNode; }

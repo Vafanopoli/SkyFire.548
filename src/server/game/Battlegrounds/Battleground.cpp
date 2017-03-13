@@ -1356,13 +1356,13 @@ void Battleground::RemoveFromBGFreeSlotQueue()
 
 // get the number of free slots for team
 // returns the number how many players can join battleground to MaxPlayersPerTeam
-uint32 Battleground::GetFreeSlotsForTeam(uint32 Team) const
+std::size_t Battleground::GetFreeSlotsForTeam(uint32 Team) const
 {
     // if BG is starting ... invite anyone
     if (GetStatus() == STATUS_WAIT_JOIN)
         return (GetInvitedCount(Team) < GetMaxPlayersPerTeam()) ? GetMaxPlayersPerTeam() - GetInvitedCount(Team) : 0;
     // if BG is already started .. do not allow to join too much players of one faction
-    uint32 otherTeam;
+    std::size_t otherTeam;
     uint32 otherIn;
     if (Team == ALLIANCE)
     {
@@ -1378,7 +1378,7 @@ uint32 Battleground::GetFreeSlotsForTeam(uint32 Team) const
     {
         // difference based on ppl invited (not necessarily entered battle)
         // default: allow 0
-        uint32 diff = 0;
+        std::size_t diff = 0;
         // allow join one person if the sides are equal (to fill up bg to minplayersperteam)
         if (otherTeam == GetInvitedCount(Team))
             diff = 1;
@@ -1387,10 +1387,10 @@ uint32 Battleground::GetFreeSlotsForTeam(uint32 Team) const
             diff = otherTeam - GetInvitedCount(Team);
 
         // difference based on max players per team (don't allow inviting more)
-        uint32 diff2 = (GetInvitedCount(Team) < GetMaxPlayersPerTeam()) ? GetMaxPlayersPerTeam() - GetInvitedCount(Team) : 0;
+        std::size_t diff2 = (GetInvitedCount(Team) < GetMaxPlayersPerTeam()) ? GetMaxPlayersPerTeam() - GetInvitedCount(Team) : 0;
         // difference based on players who already entered
         // default: allow 0
-        uint32 diff3 = 0;
+        std::size_t diff3 = 0;
         // allow join one person if the sides are equal (to fill up bg minplayersperteam)
         if (otherIn == GetPlayersCountByTeam(Team))
             diff3 = 1;

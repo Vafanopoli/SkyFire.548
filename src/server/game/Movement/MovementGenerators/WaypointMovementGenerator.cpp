@@ -219,7 +219,7 @@ bool WaypointMovementGenerator<Creature>::GetResetPos(Creature*, float& x, float
 
 //----------------------------------------------------//
 
-uint32 FlightPathMovementGenerator::GetPathAtMapEnd() const
+std::size_t FlightPathMovementGenerator::GetPathAtMapEnd() const
 {
     if (i_currentNode >= i_path->size())
         return i_path->size();

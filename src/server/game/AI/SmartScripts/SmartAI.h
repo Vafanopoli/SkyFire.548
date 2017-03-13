@@ -215,13 +215,13 @@ class SmartAI : public CreatureAI
         SmartScript mScript;
         WPPath* mWayPoints;
         uint32 mEscortState;
-        uint32 mCurrentWPID;
+        std::size_t mCurrentWPID;
         uint32 mLastWPIDReached;
         bool mWPReached;
         uint32 mWPPauseTimer;
         WayPoint* mLastWP;
         Position mLastOOCPos;//set on enter combat
-        uint32 GetWPCount() { return mWayPoints ? mWayPoints->size() : 0; }
+        std::size_t GetWPCount() { return mWayPoints ? mWayPoints->size() : 0; }
         bool mCanRepeatPath;
         bool mRun;
         bool mCanAutoAttack;

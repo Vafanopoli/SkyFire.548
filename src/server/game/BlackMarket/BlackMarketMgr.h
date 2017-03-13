@@ -133,12 +133,12 @@ public:
     void LoadBlackMarketAuctions();
 
     BlackMarketAuctionTemplate* GetTemplate(uint32 templateId) const;
-    uint32 GetTemplatesCount() { return _templates.size(); }
+    //uint32 GetTemplatesCount() { return _templates.size(); }
     BMAuctionTemplateStore::iterator GetTemplatesBegin() { return _templates.begin(); }
     BMAuctionTemplateStore::iterator GetTemplatesEnd() { return _templates.end(); }
 
     BlackMarketAuction* GetAuction(uint32 auctionId) const;
-    uint32 GetAuctionCount() { return _auctions.size(); }
+    //uint32 GetAuctionCount() { return _auctions.size(); }
     BMAuctionStore::iterator GetAuctionsBegin() { return _auctions.begin(); }
     BMAuctionStore::iterator GetAuctionsEnd() { return _auctions.end(); }
 

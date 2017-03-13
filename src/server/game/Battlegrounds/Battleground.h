@@ -326,8 +326,8 @@ class Battleground
         uint32 GetMinLevel() const          { return m_LevelMin; }
         uint32 GetMaxLevel() const          { return m_LevelMax; }
 
-        uint32 GetMaxPlayersPerTeam() const { return m_MaxPlayersPerTeam; }
-        uint32 GetMinPlayersPerTeam() const { return m_MinPlayersPerTeam; }
+        std::size_t GetMaxPlayersPerTeam() const { return m_MaxPlayersPerTeam; }
+        std::size_t GetMinPlayersPerTeam() const { return m_MinPlayersPerTeam; }
 
         int32 GetStartDelayTime() const     { return m_StartDelayTime; }
         uint8 GetArenaType() const          { return m_ArenaType; }
@@ -371,9 +371,9 @@ class Battleground
         void IncreaseInvitedCount(uint32 team)      { (team == ALLIANCE) ? ++m_InvitedAlliance : ++m_InvitedHorde; }
 
         void SetRandom(bool isRandom) { m_IsRandom = isRandom; }
-        uint32 GetInvitedCount(uint32 team) const   { return (team == ALLIANCE) ? m_InvitedAlliance : m_InvitedHorde; }
+        std::size_t GetInvitedCount(uint32 team) const   { return (team == ALLIANCE) ? m_InvitedAlliance : m_InvitedHorde; }
         bool HasFreeSlots() const;
-        uint32 GetFreeSlotsForTeam(uint32 Team) const;
+        std::size_t GetFreeSlotsForTeam(uint32 Team) const;
 
         bool isArena() const        { return m_IsArena; }
         bool isBattleground() const { return !m_IsArena; }
@@ -656,8 +656,8 @@ class Battleground
         // Invited counters are useful for player invitation to BG - do not allow, if BG is started to one faction to have 2 more players than another faction
         // Invited counters will be changed only when removing already invited player from queue, removing player from battleground and inviting player to BG
         // Invited players counters
-        uint32 m_InvitedAlliance;
-        uint32 m_InvitedHorde;
+        std::size_t m_InvitedAlliance;
+        std::size_t m_InvitedHorde;
 
         // Raid Group
         Group* m_BgRaids[BG_TEAMS_COUNT];                   // 0 - alliance, 1 - horde
@@ -674,9 +674,9 @@ class Battleground
         // Limits
         uint32 m_LevelMin;
         uint32 m_LevelMax;
-        uint32 m_MaxPlayersPerTeam;
+        std::size_t m_MaxPlayersPerTeam;
         uint32 m_MaxPlayers;
-        uint32 m_MinPlayersPerTeam;
+        std::size_t m_MinPlayersPerTeam;
         uint32 m_MinPlayers;
 
         // Start location

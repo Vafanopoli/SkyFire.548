@@ -344,7 +344,7 @@ struct Loot
     bool empty() const { return items.empty() && gold == 0; }
     bool isLooted() const { return gold == 0 && unlootedCount == 0; }
 
-    void NotifyItemRemoved(uint8 lootIndex);
+    void NotifyItemRemoved(std::size_t lootIndex);
     void NotifyQuestItemRemoved(uint8 questIndex);
     void NotifyMoneyRemoved();
     void AddLooter(uint64 GUID) { PlayersLooting.insert(GUID); }
@@ -357,8 +357,8 @@ struct Loot
     // Inserts the item into the loot (called by LootTemplate processors)
     void AddItem(LootStoreItem const & item);
 
-    LootItem* LootItemInSlot(uint32 lootslot, Player* player, QuestItem** qitem = NULL, QuestItem** ffaitem = NULL, QuestItem** conditem = NULL);
-    uint32 GetMaxSlotInLootFor(Player* player) const;
+    LootItem* LootItemInSlot(std::size_t lootslot, Player* player, QuestItem** qitem = NULL, QuestItem** ffaitem = NULL, QuestItem** conditem = NULL);
+    std::size_t GetMaxSlotInLootFor(Player* player) const;
     bool hasItemFor(Player* player) const;
     bool hasOverThresholdItem() const;
 

@@ -504,10 +504,10 @@ void Loot::FillNotNormalLootFor(Player* player, bool presentAtLooting)
         return;
 
     // Process currency items
-    uint32 max_slot = GetMaxSlotInLootFor(player);
+    std::size_t max_slot = GetMaxSlotInLootFor(player);
     LootItem const* item = NULL;
-    uint32 itemsSize = uint32(items.size());
-    for (uint32 i = 0; i < max_slot; ++i)
+    std::size_t itemsSize = items.size();
+    for (std::size_t i = 0; i < max_slot; ++i)
     {
         if (i < items.size())
             item = &items[i];
@@ -616,7 +616,7 @@ QuestItemList* Loot::FillNonQuestNonFFAConditionalLoot(Player* player, bool pres
 
 //===================================================
 
-void Loot::NotifyItemRemoved(uint8 lootIndex)
+void Loot::NotifyItemRemoved(std::size_t lootIndex)
 {
     // notify all players that are looting this that the item was removed
     // convert the index to the slot the player sees
@@ -721,7 +721,7 @@ void Loot::DeleteLootMoneyFromContainerItemDB()
     CharacterDatabase.Execute(stmt);
 }
 
-LootItem* Loot::LootItemInSlot(uint32 lootSlot, Player* player, QuestItem* *qitem, QuestItem* *ffaitem, QuestItem* *conditem)
+LootItem* Loot::LootItemInSlot(std::size_t lootSlot, Player* player, QuestItem* *qitem, QuestItem* *ffaitem, QuestItem* *conditem)
 {
     LootItem* item = NULL;
     bool is_looted = true;
@@ -784,7 +784,7 @@ LootItem* Loot::LootItemInSlot(uint32 lootSlot, Player* player, QuestItem* *qite
     return item;
 }
 
-uint32 Loot::GetMaxSlotInLootFor(Player* player) const
+std::size_t Loot::GetMaxSlotInLootFor(Player* player) const
 {
     QuestItemMap::const_iterator itr = PlayerQuestItems.find(player->GetGUIDLow());
     return items.size() + (itr != PlayerQuestItems.end() ?  itr->second->size() : 0);

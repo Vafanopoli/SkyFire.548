@@ -2235,7 +2235,7 @@ void Group::UpdateLooterGuid(WorldObject* pLootedObject, bool ifneed)
     }
 }
 
-GroupJoinBattlegroundResult Group::CanJoinBattlegroundQueue(Battleground const* bgOrTemplate, BattlegroundQueueTypeId bgQueueTypeId, uint32 MinPlayerCount, uint32 /*MaxPlayerCount*/, bool isRated, uint32 arenaSlot)
+GroupJoinBattlegroundResult Group::CanJoinBattlegroundQueue(Battleground const* bgOrTemplate, BattlegroundQueueTypeId bgQueueTypeId, std::size_t MinPlayerCount, std::size_t /*MaxPlayerCount*/, bool isRated, uint32 arenaSlot)
 {
     // check if this group is LFG group
     if (isLFGGroup())

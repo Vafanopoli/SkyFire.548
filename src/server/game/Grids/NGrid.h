@@ -170,13 +170,13 @@ class NGrid
             return count;
         }
         */
-
+        
         template<class T>
-        uint32 GetWorldObjectCountInNGrid() const
+        std::size_t GetWorldObjectCountInNGrid() const
         {
-            uint32 count = 0;
-            for (uint32 x = 0; x < N; ++x)
-                for (uint32 y = 0; y < N; ++y)
+            std::size_t count = 0;
+            for (std::size_t x = 0; x < N; ++x)
+                for (std::size_t y = 0; y < N; ++y)
                     count += i_cells[x][y].template GetWorldObjectCountInGrid<T>();
             return count;
         }

@@ -109,7 +109,7 @@ WayPoint* SmartAI::GetNextWayPoint()
         mLastWP = (*itr).second;
         if (mLastWP->id != mCurrentWPID)
         {
-            SF_LOG_ERROR("misc", "SmartAI::GetNextWayPoint: Got not expected waypoint id %u, expected %u", mLastWP->id, mCurrentWPID);
+            SF_LOG_ERROR("misc", "SmartAI::GetNextWayPoint: Got not expected waypoint id %u, expected %I64u", mLastWP->id, mCurrentWPID);
         }
         return (*itr).second;
     }

@@ -26267,8 +26267,8 @@ void Player::AutoStoreLoot(uint8 bag, uint8 slot, uint32 loot_id, LootStore cons
     Loot loot;
     loot.FillLoot (loot_id, store, this, true);
 
-    uint32 max_slot = loot.GetMaxSlotInLootFor(this);
-    for (uint32 i = 0; i < max_slot; ++i)
+    std::size_t max_slot = loot.GetMaxSlotInLootFor(this);
+    for (std::size_t i = 0; i < max_slot; ++i)
     {
         LootItem* lootItem = loot.LootItemInSlot(i, this);
 
@@ -26289,7 +26289,7 @@ void Player::AutoStoreLoot(uint8 bag, uint8 slot, uint32 loot_id, LootStore cons
     }
 }
 
-void Player::StoreLootItem(uint8 lootSlot, Loot* loot)
+void Player::StoreLootItem(std::size_t lootSlot, Loot* loot)
 {
     QuestItem* qitem = NULL;
     QuestItem* ffaitem = NULL;

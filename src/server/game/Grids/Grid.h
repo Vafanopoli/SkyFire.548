@@ -103,10 +103,7 @@ class Grid
          */
         //unsigned int ActiveObjectsInGrid(void) const { return i_objects.template Count<ACTIVE_OBJECT>(); }
         template<class T>
-        uint32 GetWorldObjectCountInGrid() const
-        {
-            return i_objects.template Count<T>();
-        }
+        std::size_t GetWorldObjectCountInGrid() const { return i_objects.template Count<T>(); }
 
         /** Inserts a container type object into the grid.
          */

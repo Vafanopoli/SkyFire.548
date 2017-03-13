@@ -1324,7 +1324,7 @@ struct SmartScriptHolder
     bool enableTimed;
 };
 
-typedef UNORDERED_MAP<uint32, WayPoint*> WPPath;
+typedef UNORDERED_MAP<std::size_t, WayPoint*> WPPath;
 
 typedef std::list<WorldObject*> ObjectList;
 typedef UNORDERED_MAP<uint32, ObjectList*> ObjectListMap;
