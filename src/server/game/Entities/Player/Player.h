@@ -2062,10 +2062,7 @@ class Player : public Unit, public GridObject<Player>
     {
         m_mail.push_front(mail);
     }// for call from WorldSession::SendMailTo
-    uint32 GetMailSize()
-    {
-        return m_mail.size();
-    }
+    std::size_t GetMailSize() { return m_mail.size(); }
     Mail* GetMail(uint32 id);
 
     PlayerMails::iterator GetMailBegin()
@@ -2771,7 +2768,7 @@ class Player : public Unit, public GridObject<Player>
 
     void SendLoot(uint64 guid, LootType loot_type);
     void SendLootRelease(ObjectGuid guid);
-    void SendNotifyLootItemRemoved(uint8 lootSlot, ObjectGuid guid);
+    void SendNotifyLootItemRemoved(std::size_t lootSlot, ObjectGuid guid);
     void SendNotifyLootMoneyRemoved();
 
     /*********************************************************/

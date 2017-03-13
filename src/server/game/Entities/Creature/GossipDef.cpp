@@ -172,14 +172,14 @@ void PlayerMenu::SendGossipMenu(uint32 titleTextId, uint64 objectGUID) const
     ObjectGuid guid = ObjectGuid(objectGUID);
 
     WorldPacket data(SMSG_GOSSIP_MESSAGE, 150);             // Guessed
-    data.WriteBits(_questMenu.GetMenuItemCount(), 19);      // max count 0x20
+    data.WriteBits(_questMenu.GetQuestMenuItemCount(), 19);      // max count 0x20
 
     // Store this instead of checking the Singleton every loop iteration
     bool questLevelInTitle = sWorld->getBoolConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS);
 
-    for (uint8 i = 0; i < _questMenu.GetMenuItemCount(); ++i)
+    for (std::size_t i = 0; i < _questMenu.GetQuestMenuItemCount(); ++i)
     {
-        uint32 questId = _questMenu.GetItem(i).QuestId;
+        uint32 questId = _questMenu.GetMenuItems(i).QuestId;
         Quest const* quest = sObjectMgr->GetQuestTemplate(questId);
 
         std::string title = quest->GetTitle();
@@ -218,9 +218,9 @@ void PlayerMenu::SendGossipMenu(uint32 titleTextId, uint64 objectGUID) const
     data.WriteBit(guid[1]);
     data.FlushBits();
 
-    for (uint8 i = 0; i < _questMenu.GetMenuItemCount(); ++i)
+    for (std::size_t i = 0; i < _questMenu.GetQuestMenuItemCount(); ++i)
     {
-        QuestMenuItem const& item = _questMenu.GetItem(i);
+        QuestMenuItem const& item = _questMenu.GetMenuItems(i);
         Quest const* quest = sObjectMgr->GetQuestTemplate(item.QuestId);
 
         data.WriteString(updatedQuestTitles[i]);
@@ -355,9 +355,9 @@ void PlayerMenu::SendQuestGiverQuestList(QEmote eEmote, const std::string& Title
     // Store this instead of checking the Singleton every loop iteration
     bool questLevelInTitle = sWorld->getBoolConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS);
 
-    for (uint32 i = 0; i < _questMenu.GetMenuItemCount(); ++i)
+    for (std::size_t i = 0; i < _questMenu.GetQuestMenuItemCount(); ++i)
     {
-        QuestMenuItem const& qmi = _questMenu.GetItem(i);
+        QuestMenuItem const& qmi = _questMenu.GetMenuItems(i);
 
         uint32 questID = qmi.QuestId;
 

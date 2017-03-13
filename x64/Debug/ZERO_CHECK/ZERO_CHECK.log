@@ -1,0 +1,20 @@
+﻿  Checking Build System
+  CMake does not need to re-run because C:/Users/micha_000/Desktop/AriDEV/SkyFire.548/build/CMakeFiles/generate.stamp is up-to-date.
+  CMake does not need to re-run because C:/Users/micha_000/Desktop/AriDEV/SkyFire.548/build/dep/CMakeFiles/generate.stamp is up-to-date.
+  CMake does not need to re-run because C:/Users/micha_000/Desktop/AriDEV/SkyFire.548/build/dep/acelite/CMakeFiles/generate.stamp is up-to-date.
+  CMake does not need to re-run because C:/Users/micha_000/Desktop/AriDEV/SkyFire.548/build/dep/acelite/ace/CMakeFiles/generate.stamp is up-to-date.
+  CMake does not need to re-run because C:/Users/micha_000/Desktop/AriDEV/SkyFire.548/build/dep/zlib/CMakeFiles/generate.stamp is up-to-date.
+  CMake does not need to re-run because C:/Users/micha_000/Desktop/AriDEV/SkyFire.548/build/dep/g3dlite/CMakeFiles/generate.stamp is up-to-date.
+  CMake does not need to re-run because C:/Users/micha_000/Desktop/AriDEV/SkyFire.548/build/dep/recastnavigation/CMakeFiles/generate.stamp is up-to-date.
+  CMake does not need to re-run because C:/Users/micha_000/Desktop/AriDEV/SkyFire.548/build/dep/recastnavigation/Detour/CMakeFiles/generate.stamp is up-to-date.
+  CMake does not need to re-run because C:/Users/micha_000/Desktop/AriDEV/SkyFire.548/build/dep/recastnavigation/Recast/CMakeFiles/generate.stamp is up-to-date.
+  CMake does not need to re-run because C:/Users/micha_000/Desktop/AriDEV/SkyFire.548/build/dep/gsoap/CMakeFiles/generate.stamp is up-to-date.
+  CMake does not need to re-run because C:/Users/micha_000/Desktop/AriDEV/SkyFire.548/build/src/CMakeFiles/generate.stamp is up-to-date.
+  CMake does not need to re-run because C:/Users/micha_000/Desktop/AriDEV/SkyFire.548/build/src/genrev/CMakeFiles/generate.stamp is up-to-date.
+  CMake does not need to re-run because C:/Users/micha_000/Desktop/AriDEV/SkyFire.548/build/src/server/CMakeFiles/generate.stamp is up-to-date.
+  CMake does not need to re-run because C:/Users/micha_000/Desktop/AriDEV/SkyFire.548/build/src/server/shared/CMakeFiles/generate.stamp is up-to-date.
+  CMake does not need to re-run because C:/Users/micha_000/Desktop/AriDEV/SkyFire.548/build/src/server/game/CMakeFiles/generate.stamp is up-to-date.
+  CMake does not need to re-run because C:/Users/micha_000/Desktop/AriDEV/SkyFire.548/build/src/server/collision/CMakeFiles/generate.stamp is up-to-date.
+  CMake does not need to re-run because C:/Users/micha_000/Desktop/AriDEV/SkyFire.548/build/src/server/authserver/CMakeFiles/generate.stamp is up-to-date.
+  CMake does not need to re-run because C:/Users/micha_000/Desktop/AriDEV/SkyFire.548/build/src/server/scripts/CMakeFiles/generate.stamp is up-to-date.
+  CMake does not need to re-run because C:/Users/micha_000/Desktop/AriDEV/SkyFire.548/build/src/server/worldserver/CMakeFiles/generate.stamp is up-to-date.

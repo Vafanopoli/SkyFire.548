@@ -1068,9 +1068,9 @@ class ScriptMgr
 
     public: /* Scheduled scripts */
 
-        uint32 IncreaseScheduledScriptsCount() { return ++_scheduledScripts; }
-        uint32 DecreaseScheduledScriptCount() { return --_scheduledScripts; }
-        uint32 DecreaseScheduledScriptCount(size_t count) { return _scheduledScripts -= count; }
+        std::size_t IncreaseScheduledScriptsCount() { return ++_scheduledScripts; }
+        std::size_t DecreaseScheduledScriptCount() { return --_scheduledScripts; }
+        std::size_t DecreaseScheduledScriptCount(std::size_t count) { return _scheduledScripts -= count; }
         bool IsScriptScheduled() const { return _scheduledScripts > 0; }
 
     private:
@@ -1078,7 +1078,7 @@ class ScriptMgr
         uint32 _scriptCount;
 
         //atomic op counter for active scripts amount
-        ACE_Atomic_Op<ACE_Thread_Mutex, long> _scheduledScripts;
+        ACE_Atomic_Op<ACE_Thread_Mutex, std::size_t> _scheduledScripts;
 };
 
 #endif

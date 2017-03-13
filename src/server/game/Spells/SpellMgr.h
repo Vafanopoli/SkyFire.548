@@ -691,7 +691,7 @@ class SpellMgr
 
         // SpellInfo object management
         SpellInfo const* GetSpellInfo(uint32 spellId) const { return spellId < GetSpellInfoStoreSize() ?  mSpellInfoMap[spellId] : NULL; }
-        uint32 GetSpellInfoStoreSize() const { return mSpellInfoMap.size(); }
+        std::size_t GetSpellInfoStoreSize() const { return mSpellInfoMap.size(); }
 
     private:
         SpellInfo* _GetSpellInfo(uint32 spellId) { return spellId < GetSpellInfoStoreSize() ?  mSpellInfoMap[spellId] : NULL; }

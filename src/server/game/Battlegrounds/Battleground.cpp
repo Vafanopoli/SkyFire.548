@@ -1612,7 +1612,7 @@ Creature* Battleground::GetBGCreature(uint32 type)
     return creature;
 }
 
-void Battleground::SpawnBGObject(uint32 type, uint32 respawntime)
+void Battleground::SpawnBGObject(BGObjectType type, uint32 respawntime)
 {
     if (Map* map = FindBgMap())
         if (GameObject* obj = map->GetGameObject(BgObjects[type]))

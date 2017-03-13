@@ -333,7 +333,7 @@ void WorldSession::HandleGetChannelMemberCount(WorldPacket &recvPacket)
     {
         if (Channel* channel = cMgr->GetChannel(channelName, GetPlayer()))
         {
-            SF_LOG_DEBUG("chat.system", "SMSG_CHANNEL_MEMBER_COUNT %s Channel: %s Count: %u",
+            SF_LOG_DEBUG("chat.system", "SMSG_CHANNEL_MEMBER_COUNT %s Channel: %s Count: %I64u",
                 GetPlayerInfo().c_str(), channelName.c_str(), channel->GetNumPlayers());
 
             WorldPacket data(SMSG_CHANNEL_MEMBER_COUNT, channel->GetName().size() + 1 + 4);

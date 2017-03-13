@@ -7523,7 +7523,7 @@ void Spell::DoAllEffectOnLaunchTarget(TargetInfo& targetInfo, float* multiplier)
                     {
                         std::size_t targetAmount = m_UniqueTargetInfo.size();
                         if (targetAmount > 10)
-                            m_damage = m_damage * 10/targetAmount;
+                            m_damage = int32(m_damage * 10/targetAmount);
                     }
                 }
             }

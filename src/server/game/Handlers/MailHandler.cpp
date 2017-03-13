@@ -157,7 +157,7 @@ void WorldSession::HandleSendMail(WorldPacket& recvData)
     Player* receiver = ObjectAccessor::FindPlayer(receiverGuid);
 
     uint32 receiverTeam = 0;
-    uint8 mailsCount = 0;                                  //do not allow to send to one player more than 100 mails
+    std::size_t mailsCount = 0;                                  //do not allow to send to one player more than 100 mails
     uint8 receiverLevel = 0;
     uint32 receiverAccountId = 0;
 

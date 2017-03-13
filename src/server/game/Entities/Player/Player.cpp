@@ -9679,7 +9679,7 @@ void Player::SendNotifyLootMoneyRemoved()
     GetSession()->SendPacket(&data);
 }
 
-void Player::SendNotifyLootItemRemoved(uint8 lootSlot, ObjectGuid guid)
+void Player::SendNotifyLootItemRemoved(std::size_t lootSlot, ObjectGuid guid)
 {
     ObjectGuid lootGuid = guid;
     // Guid could also be itemID
@@ -15479,9 +15479,9 @@ void Player::SendPreparedQuest(uint64 guid)
         return;
 
     // single element case
-    if (questMenu.GetMenuItemCount() == 1)
+    if (questMenu.GetQuestMenuItemCount() == 1)
     {
-        QuestMenuItem const& qmi0 = questMenu.GetItem(0);
+        QuestMenuItem const& qmi0 = questMenu.GetMenuItems(0);
         uint32 questId = qmi0.QuestId;
 
         // Auto open -- maybe also should verify there is no greeting

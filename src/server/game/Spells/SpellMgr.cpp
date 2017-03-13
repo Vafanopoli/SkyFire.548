@@ -1371,7 +1371,7 @@ void SpellMgr::LoadSpellLearnSkills()
 
     // search auto-learned skills and add its to map also for use in unlearn spells/talents
     uint32 dbc_count = 0;
-    for (uint32 spell = 0; spell < GetSpellInfoStoreSize(); ++spell)
+    for (std::size_t spell = 0; spell < GetSpellInfoStoreSize(); ++spell)
     {
         SpellInfo const* entry = GetSpellInfo(spell);
 
@@ -1454,7 +1454,7 @@ void SpellMgr::LoadSpellLearnSpells()
 
     // search auto-learned spells and add its to map also for use in unlearn spells/talents
     uint32 dbc_count = 0;
-    for (uint32 spell = 0; spell < GetSpellInfoStoreSize(); ++spell)
+    for (std::size_t spell = 0; spell < GetSpellInfoStoreSize(); ++spell)
     {
         SpellInfo const* entry = GetSpellInfo(spell);
 
@@ -2191,7 +2191,7 @@ void SpellMgr::LoadEnchantCustomAttr()
        mEnchantCustomAttr[i] = 0;
 
     uint32 count = 0;
-    for (uint32 i = 0; i < GetSpellInfoStoreSize(); ++i)
+    for (std::size_t i = 0; i < GetSpellInfoStoreSize(); ++i)
     {
         SpellInfo const* spellInfo = GetSpellInfo(i);
         if (!spellInfo)
@@ -2455,7 +2455,7 @@ void SpellMgr::LoadPetDefaultSpells()
     oldMSTime = getMSTime();
 
     // different summon spells
-    for (uint32 i = 0; i < GetSpellInfoStoreSize(); ++i)
+    for (std::size_t i = 0; i < GetSpellInfoStoreSize(); ++i)
     {
         SpellInfo const* spellEntry = GetSpellInfo(i);
         if (!spellEntry)
@@ -2721,7 +2721,7 @@ void SpellMgr::LoadSpellInfoStore()
 
 void SpellMgr::UnloadSpellInfoStore()
 {
-    for (uint32 i = 0; i < GetSpellInfoStoreSize(); ++i)
+    for (std::size_t i = 0; i < GetSpellInfoStoreSize(); ++i)
         delete mSpellInfoMap[i];
 
     mSpellInfoMap.clear();
@@ -2729,7 +2729,7 @@ void SpellMgr::UnloadSpellInfoStore()
 
 void SpellMgr::UnloadSpellInfoImplicitTargetConditionLists()
 {
-    for (uint32 i = 0; i < GetSpellInfoStoreSize(); ++i)
+    for (std::size_t i = 0; i < GetSpellInfoStoreSize(); ++i)
         if (mSpellInfoMap[i])
             mSpellInfoMap[i]->_UnloadImplicitTargetConditionLists();
 }
@@ -2739,7 +2739,7 @@ void SpellMgr::LoadSpellInfoCustomAttributes()
     uint32 oldMSTime = getMSTime();
 
     SpellInfo* spellInfo = NULL;
-    for (uint32 i = 0; i < GetSpellInfoStoreSize(); ++i)
+    for (std::size_t i = 0; i < GetSpellInfoStoreSize(); ++i)
     {
         spellInfo = mSpellInfoMap[i];
         if (!spellInfo)
@@ -3035,7 +3035,7 @@ void SpellMgr::LoadSpellInfoCorrections()
     uint32 oldMSTime = getMSTime();
 
     SpellInfo* spellInfo = NULL;
-    for (uint32 i = 0; i < GetSpellInfoStoreSize(); ++i)
+    for (std::size_t i = 0; i < GetSpellInfoStoreSize(); ++i)
     {
         spellInfo = (SpellInfo*)mSpellInfoMap[i];
         if (!spellInfo)

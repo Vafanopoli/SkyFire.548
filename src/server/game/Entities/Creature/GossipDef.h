@@ -174,10 +174,7 @@ class GossipMenu
 
         void AddGossipMenuItemData(uint32 menuItemId, uint32 gossipActionMenuId, uint32 gossipActionPoi);
 
-        uint32 GetMenuItemCount() const
-        {
-            return _menuItems.size();
-        }
+        std::size_t GetMenuItemCount() const { return _menuItems.size(); }
 
         bool Empty() const
         {
@@ -229,10 +226,7 @@ class QuestMenu
         void AddMenuItem(uint32 QuestId, uint8 Icon);
         void ClearMenu();
 
-        uint8 GetMenuItemCount() const
-        {
-            return _questMenuItems.size();
-        }
+        std::size_t GetQuestMenuItemCount() const { return _questMenuItems.size(); }
 
         bool Empty() const
         {
@@ -241,7 +235,7 @@ class QuestMenu
 
         bool HasItem(uint32 questId) const;
 
-        QuestMenuItem const& GetItem(uint16 index) const
+        QuestMenuItem const& GetMenuItems(std::size_t index) const
         {
             return _questMenuItems[index];
         }

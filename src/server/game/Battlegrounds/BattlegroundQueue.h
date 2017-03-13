@@ -111,11 +111,11 @@ class BattlegroundQueue
             void Init();
             bool AddGroup(GroupQueueInfo* ginfo, uint32 desiredCount);
             bool KickGroup(uint32 size);
-            uint32 GetPlayerCount() const {return PlayerCount;}
+            std::size_t GetPlayerCount() const {return PlayerCount;}
         public:
             GroupsQueueType SelectedGroups;
         private:
-            uint32 PlayerCount;
+            std::size_t PlayerCount;
         };
 
         //one selection pool for horde, other one for alliance

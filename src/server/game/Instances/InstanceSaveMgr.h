@@ -56,8 +56,8 @@ class InstanceSave
            or when the instance is reset */
         ~InstanceSave();
 
-        uint8 GetPlayerCount() const { return m_playerList.size(); }
-        uint8 GetGroupCount() const { return m_groupList.size(); }
+        std::size_t GetPlayerCount() const { return m_playerList.size(); }
+        std::size_t GetGroupCount() const { return m_groupList.size(); }
 
         /* A map corresponding to the InstanceId/MapId does not always exist.
         InstanceSave objects may be created on player logon but the maps are
@@ -201,7 +201,7 @@ class InstanceSaveManager
         InstanceSave* GetInstanceSave(uint32 InstanceId);
 
         /* statistics */
-        uint32 GetNumInstanceSaves() { return m_instanceSaveById.size(); }
+        //std::size_t GetNumInstanceSaves() { return m_instanceSaveById.size(); }
         uint32 GetNumBoundPlayersTotal();
         uint32 GetNumBoundGroupsTotal();
 

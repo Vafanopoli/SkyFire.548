@@ -264,9 +264,9 @@ void World::AddSession_(WorldSession* s)
 
     m_sessions[s->GetAccountId()] = s;
 
-    uint32 Sessions = GetActiveAndQueuedSessionCount();
+    std::size_t Sessions = GetActiveAndQueuedSessionCount();
     uint32 pLimit = GetPlayerAmountLimit();
-    uint32 QueueSize = GetQueuedSessionCount(); //number of players in the queue
+    std::size_t QueueSize = GetQueuedSessionCount(); //number of players in the queue
 
     //so we don't count the user trying to
     //login as a session and queue the socket that we are using
@@ -277,7 +277,7 @@ void World::AddSession_(WorldSession* s)
     {
         AddQueuedPlayer(s);
         UpdateMaxSessionCounters();
-        SF_LOG_INFO("misc", "PlayerQueue: Account id %u is in Queue Position (%u).", s->GetAccountId(), ++QueueSize);
+        SF_LOG_INFO("misc", "PlayerQueue: Account id %u is in Queue Position (%I64u).", s->GetAccountId(), ++QueueSize);
         return;
     }
 
@@ -344,7 +344,7 @@ void World::AddQueuedPlayer(WorldSession* sess)
 bool World::RemoveQueuedPlayer(WorldSession* sess)
 {
     // sessions count including queued to remove (if removed_session set)
-    uint32 sessions = GetActiveSessionCount();
+    std::size_t sessions = GetActiveSessionCount();
 
     uint32 position = 1;
     Queue::iterator iter = m_QueuedPlayer.begin();
@@ -2037,7 +2037,7 @@ void World::Update(uint32 diff)
     {
         if (m_updateTimeSum > m_int_configs[CONFIG_INTERVAL_LOG_UPDATE])
         {
-            SF_LOG_DEBUG("misc", "Update time diff: %u. Players online: %u.", m_updateTimeSum / m_updateTimeCount, GetActiveSessionCount());
+            SF_LOG_DEBUG("misc", "Update time diff: %u. Players online: %I64u.", (m_updateTimeSum / m_updateTimeCount), GetActiveSessionCount());
             m_updateTimeSum = m_updateTime;
             m_updateTimeCount = 1;
         }

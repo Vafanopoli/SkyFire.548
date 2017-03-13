@@ -40,6 +40,8 @@ class BattlegroundMap;
 struct PvPDifficultyEntry;
 struct WorldSafeLocsEntry;
 
+typedef std::size_t BGObjectType;
+
 enum BattlegroundCriteriaId
 {
     BG_CRITERIA_CHECK_RESILIENT_VICTORY,
@@ -379,14 +381,13 @@ class Battleground
 
         typedef std::map<uint64, BattlegroundPlayer> BattlegroundPlayerMap;
         BattlegroundPlayerMap const& GetPlayers() const { return m_Players; }
-        uint32 GetPlayersSize() const { return m_Players.size(); }
+        std::size_t GetPlayersSize() const { return m_Players.size(); }
 
         typedef std::map<uint64, BattlegroundScore*> BattlegroundScoreMap;
         BattlegroundScoreMap::const_iterator GetPlayerScoresBegin() const { return PlayerScores.begin(); }
         BattlegroundScoreMap::const_iterator GetPlayerScoresEnd() const { return PlayerScores.end(); }
-        uint32 GetPlayerScoresSize() const { return PlayerScores.size(); }
-
-        uint32 GetReviveQueueSize() const { return m_ReviveQueue.size(); }
+        std::size_t GetPlayerScoresSize() const { return PlayerScores.size(); }
+        std::size_t GetReviveQueueSize() const { return m_ReviveQueue.size(); }
 
         void AddPlayerToResurrectQueue(uint64 npc_guid, uint64 player_guid);
         void RemovePlayerFromResurrectQueue(uint64 player_guid);
@@ -518,7 +519,7 @@ class Battleground
         typedef std::vector<uint64> BGCreatures;
         BGObjects BgObjects;
         BGCreatures BgCreatures;
-        void SpawnBGObject(uint32 type, uint32 respawntime);
+        void SpawnBGObject(BGObjectType type, uint32 respawntime);
         bool AddObject(uint32 type, uint32 entry, float x, float y, float z, float o, float rotation0, float rotation1, float rotation2, float rotation3, uint32 respawnTime = 0);
         Creature* AddCreature(uint32 entry, uint32 type, uint32 teamval, float x, float y, float z, float o, uint32 respawntime = 0);
         bool DelCreature(uint32 type);

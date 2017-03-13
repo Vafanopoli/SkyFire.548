@@ -254,7 +254,7 @@ Item::Item()
     m_valuesCount = ITEM_END;
     m_slot = 0;
     uState = ITEM_NEW;
-    uQueuePos = -1;
+    uQueuePos = 0;
     m_container = NULL;
     m_lootGenerated = false;
     mb_in_trade = false;
@@ -699,7 +699,7 @@ void Item::SetState(ItemUpdateState state, Player* forplayer)
     {
         // unset in queue
         // the item must be removed from the queue manually
-        uQueuePos = -1;
+        uQueuePos = 0;
         uState = ITEM_UNCHANGED;
     }
 }
@@ -721,7 +721,7 @@ void Item::AddToUpdateQueueOf(Player* player)
         return;
 
     player->m_itemUpdateQueue.push_back(this);
-    uQueuePos = player->m_itemUpdateQueue.size()-1;
+    uQueuePos = player->m_itemUpdateQueue.size();
 }
 
 void Item::RemoveFromUpdateQueueOf(Player* player)
@@ -741,7 +741,7 @@ void Item::RemoveFromUpdateQueueOf(Player* player)
         return;
 
     player->m_itemUpdateQueue[uQueuePos] = NULL;
-    uQueuePos = -1;
+    uQueuePos = 0;
 }
 
 uint8 Item::GetBagSlot() const
