@@ -1820,7 +1820,7 @@ void Battleground::HandleTriggerBuff(uint64 go_guid)
         return;
 
     // Change buff type, when buff is used:
-    int32 index = BgObjects.size() - 1;
+    std::size_t index = BgObjects.size() - 1;
     while (index >= 0 && BgObjects[index] != go_guid)
         index--;
     if (index < 0)

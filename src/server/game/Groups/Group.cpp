@@ -708,7 +708,7 @@ void Group::ChangeLeader(uint64 newLeaderGuid)
     m_leaderName = newLeader->GetName();
     ToggleGroupMemberFlag(slot, MEMBER_FLAG_ASSISTANT, false);
 
-    uint8 leaderNameLen = m_leaderName.size();
+    std::size_t leaderNameLen = m_leaderName.size();
 
     WorldPacket data(SMSG_GROUP_SET_LEADER, 1 + 1 + leaderNameLen);
     data << uint8(0);

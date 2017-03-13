@@ -1024,9 +1024,9 @@ void WorldSession::SendAreaTriggerMessage(const char* Text, ...)
     vsnprintf(szStr, 1024, Text, ap);
     va_end(ap);
 
-    uint32 length = strlen(szStr)+1;
+    std::size_t length = strlen(szStr)+1;
     WorldPacket data(SMSG_AREA_TRIGGER_MESSAGE, 4+length);
-    data << length;
+    data << uint32(length);
     data << szStr;
     SendPacket(&data);
 }
@@ -1234,7 +1234,7 @@ void WorldSession::HandleRequestAccountData(WorldPacket& recvData)
 
     AccountData* adata = GetAccountData(AccountDataType(type));
 
-    uint32 size = adata->Data.size();
+    std::size_t size = adata->Data.size();
 
     uLongf destSize = compressBound(size);
 
@@ -2250,8 +2250,8 @@ void WorldSession::SendBroadcastText(uint32 entry)
 
     GossipText const* pGossip = sObjectMgr->GetGossipText(entry);
 
-    uint16 nrmTextLength = pGossip ? pGossip->Options[0].Text_0.length() : defaultText.length();
-    uint16 altTextLength = pGossip ? pGossip->Options[0].Text_1.length() : defaultText.length();
+    std::size_t nrmTextLength = pGossip ? pGossip->Options[0].Text_0.length() : defaultText.length();
+    std::size_t altTextLength = pGossip ? pGossip->Options[0].Text_1.length() : defaultText.length();
 
     buffer << uint32(entry);
     buffer << uint32(pGossip ? pGossip->Options[0].Language : 0);

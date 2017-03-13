@@ -3896,7 +3896,7 @@ void Spell::SendCastResult(Player* caster, SpellInfo const* spellInfo, uint8 cas
             break;
     }
 
-    if (int32 diff = data.wpos() - dataPos)
+    if (std::size_t diff = data.wpos() - dataPos)
     {
         if ((diff / 4) == 1)
             data.PutBits(pos, 0, 1);
@@ -7521,7 +7521,7 @@ void Spell::DoAllEffectOnLaunchTarget(TargetInfo& targetInfo, float* multiplier)
 
                     if (m_caster->GetTypeId() == TYPEID_PLAYER)
                     {
-                        uint32 targetAmount = m_UniqueTargetInfo.size();
+                        std::size_t targetAmount = m_UniqueTargetInfo.size();
                         if (targetAmount > 10)
                             m_damage = m_damage * 10/targetAmount;
                     }

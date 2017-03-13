@@ -723,7 +723,7 @@ void WorldSession::HandleGetMailList(WorldPacket& recvData)
             continue;
 
         // skip mail with more than MAX_MAIL_ITEMS items (should not occur)
-        uint8 itemCount = mail->items.size();
+        std::size_t itemCount = mail->items.size();
         if (itemCount > MAX_MAIL_ITEMS)
         {
             realCount += 1;

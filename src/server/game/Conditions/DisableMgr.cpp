@@ -279,7 +279,7 @@ void CheckQuestDisables()
 {
     uint32 oldMSTime = getMSTime();
 
-    uint32 count = m_DisableMap[DISABLE_TYPE_QUEST].size();
+    std::size_t count = m_DisableMap[DISABLE_TYPE_QUEST].size();
     if (!count)
     {
         SF_LOG_INFO("server.loading", ">> Checked 0 quest disables.");
@@ -301,7 +301,7 @@ void CheckQuestDisables()
         ++itr;
     }
 
-    SF_LOG_INFO("server.loading", ">> Checked %u quest disables in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+    SF_LOG_INFO("server.loading", ">> Checked %I64u quest disables in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
 }
 
 bool IsDisabledFor(DisableType type, uint32 entry, Unit const* unit, uint8 flags)

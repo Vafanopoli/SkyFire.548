@@ -148,7 +148,7 @@ void PlayerSocial::SendSocialList(Player* player)
     if (!player)
         return;
 
-    uint32 size = m_playerSocialMap.size();
+    std::size_t size = m_playerSocialMap.size();
 
     WorldPacket data(SMSG_CONTACT_LIST, 4 + 4 + (size * 33));
     data << uint32(7);                                      // 0x1 = Friendlist update. 0x2 = Ignorelist update. 0x4 = Mutelist update.

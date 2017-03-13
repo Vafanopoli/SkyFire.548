@@ -727,7 +727,7 @@ LootItem* Loot::LootItemInSlot(uint32 lootSlot, Player* player, QuestItem* *qite
     bool is_looted = true;
     if (lootSlot >= items.size())
     {
-        uint32 questSlot = lootSlot - items.size();
+        std::size_t questSlot = lootSlot - items.size();
         QuestItemMap::const_iterator itr = PlayerQuestItems.find(player->GetGUIDLow());
         if (itr != PlayerQuestItems.end() && questSlot < itr->second->size())
         {
@@ -856,7 +856,7 @@ void LootItem::WriteBitDataPart(uint8 permission, bool hasSlotType, ByteBuffer* 
     buff->WriteBits(0, 2); // Unk 2 bits
 }
 
-void LootItem::WriteBasicDataPart(uint8 slotType, uint8 slot, ByteBuffer* buff)
+void LootItem::WriteBasicDataPart(uint8 slotType, std::size_t slot, ByteBuffer* buff)
 {
     *buff << uint32(randomSuffix);
     *buff << uint32(count);
@@ -1049,7 +1049,7 @@ void LootView::WriteData(ObjectGuid guid, LootType lootType, WorldPacket* data)
                 if (!qi->is_looted && !item.is_looted)
                 {
                     LootSlotType finalSlotType = slotType;
-                    uint8 index = loot.items.size() + (qi - q_list->begin());
+                    std::size_t index = loot.items.size() + (qi - q_list->begin());
 
                     if (item.follow_loot_rules)
                     {

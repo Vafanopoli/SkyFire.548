@@ -308,12 +308,12 @@ bool SpellChatLink::ValidateName(char* buffer, const char* context)
             return false;
         }
 
-        uint32 skillLineNameLength = strlen(skillLine->name);
+        std::size_t skillLineNameLength = strlen(skillLine->name);
         if (skillLineNameLength > 0 && strncmp(skillLine->name, buffer, skillLineNameLength) == 0)
         {
             // found the prefix, remove it to perform spellname validation below
             // -2 = strlen(": ")
-            uint32 spellNameLength = strlen(buffer) - skillLineNameLength - 2;
+            std::size_t spellNameLength = strlen(buffer) - skillLineNameLength - 2;
             memcpy(buffer, buffer + skillLineNameLength + 2, spellNameLength + 1);
         }
     }

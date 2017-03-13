@@ -310,7 +310,7 @@ void MoveSpline::_Finalize()
 
 int32 MoveSpline::currentPathIdx() const
 {
-    int32 point = point_Idx_offset + point_Idx - spline.first() + (int)Finalized();
+    std::size_t point = point_Idx_offset + point_Idx - spline.first() + (int)Finalized();
     if (isCyclic())
         point = point % (spline.last()-spline.first());
     return point;

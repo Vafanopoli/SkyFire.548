@@ -96,7 +96,7 @@ void WorldSession::HandleGuildFinderBrowse(WorldPacket& recvPacket)
 
     LFGuildPlayer settings(player->GetGUIDLow(), classRoles, availability, guildInterests, ANY_FINDER_LEVEL);
     LFGuildStore guildList = sGuildFinderMgr->GetGuildsMatchingSetting(settings, player->GetTeamId());
-    uint32 guildCount = guildList.size();
+    std::size_t guildCount = guildList.size();
 
     if (guildCount == 0)
     {
@@ -195,7 +195,7 @@ void WorldSession::HandleGuildFinderGetApplications(WorldPacket& /*recvPacket*/)
     SF_LOG_DEBUG("network", "WORLD: Received CMSG_LF_GUILD_GET_APPLICATIONS"); // Empty opcode
 
     std::list<MembershipRequest> applicatedGuilds = sGuildFinderMgr->GetAllMembershipRequestsForPlayer(GetPlayer()->GetGUIDLow());
-    uint32 applicationsCount = applicatedGuilds.size();
+    std::size_t applicationsCount = applicatedGuilds.size();
     WorldPacket data(SMSG_LF_GUILD_MEMBERSHIP_LIST_UPDATED, 7 + 54 * applicationsCount);
     data.WriteBits(applicationsCount, 20);
 
@@ -257,7 +257,7 @@ void WorldSession::HandleGuildFinderGetRecruits(WorldPacket& recvPacket)
         return;
 
     std::vector<MembershipRequest> recruitsList = sGuildFinderMgr->GetAllMembershipRequestsForGuild(player->GetGuildId());
-    uint32 recruitCount = recruitsList.size();
+    std::size_t recruitCount = recruitsList.size();
 
     ByteBuffer dataBuffer(53 * recruitCount);
     WorldPacket data(SMSG_LF_GUILD_RECRUIT_LIST_UPDATED, 7 + 26 * recruitCount + 53 * recruitCount);

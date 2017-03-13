@@ -219,7 +219,7 @@ void SplineBase::init_cyclic_spline(const Vector3 * controls, index_type count, 
 void SplineBase::InitLinear(const Vector3* controls, index_type count, bool cyclic, index_type cyclic_point)
 {
     ASSERT(count >= 2);
-    const int real_size = count + 1;
+    const index_type real_size = count + 1;
 
     points.resize(real_size);
 
@@ -238,12 +238,12 @@ void SplineBase::InitLinear(const Vector3* controls, index_type count, bool cycl
 
 void SplineBase::InitCatmullRom(const Vector3* controls, index_type count, bool cyclic, index_type cyclic_point)
 {
-    const int real_size = count + (cyclic ? (1+2) : (1+1));
+    const index_type real_size = count + (cyclic ? (1+2) : (1+1));
 
     points.resize(real_size);
 
     int lo_index = 1;
-    int high_index = lo_index + count - 1;
+    index_type high_index = lo_index + count - 1;
 
     memcpy(&points[lo_index], controls, sizeof(Vector3) * count);
 

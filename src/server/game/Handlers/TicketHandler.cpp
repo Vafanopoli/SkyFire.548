@@ -80,7 +80,7 @@ void WorldSession::HandleGMTicketCreateOpcode(WorldPacket& recvData)
 
             if (count && decompressedSize && decompressedSize < 0xFFFF)
             {
-                uint32 pos = recvData.rpos();
+                std::size_t pos = recvData.rpos();
                 ByteBuffer tailPacket;
                 tailPacket.resize(decompressedSize);
 

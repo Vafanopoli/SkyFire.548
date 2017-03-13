@@ -239,9 +239,9 @@ void TransportMgr::GeneratePath(GameObjectTemplate const* goInfo, TransportTempl
     // and distUntilStop is to the next stopping keyframe.
     // this is required to properly handle cases of two stopping frames in a row (yes they do exist)
     float tmpDist = 0.0f;
-    for (size_t i = 0; i < keyFrames.size(); ++i)
+    for (std::size_t i = 0; i < keyFrames.size(); ++i)
     {
-        int32 j = (i + lastStop) % keyFrames.size();
+        std::size_t j = (i + lastStop) % keyFrames.size();
         if (keyFrames[j].IsStopFrame() || j == lastStop)
             tmpDist = 0.0f;
         else
@@ -289,9 +289,9 @@ void TransportMgr::GeneratePath(GameObjectTemplate const* goInfo, TransportTempl
 
     // calculate tFrom times from tTo times
     float segmentTime = 0.0f;
-    for (size_t i = 0; i < keyFrames.size(); ++i)
+    for (std::size_t i = 0; i < keyFrames.size(); ++i)
     {
-        int32 j = (i + lastStop) % keyFrames.size();
+        std::size_t j = (i + lastStop) % keyFrames.size();
         if (keyFrames[j].IsStopFrame() || j == lastStop)
             segmentTime = keyFrames[j].TimeTo;
         keyFrames[j].TimeFrom = segmentTime - keyFrames[j].TimeTo;

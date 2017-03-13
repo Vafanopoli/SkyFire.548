@@ -376,7 +376,7 @@ void GameEventMgr::LoadFromDB()
                 uint32 guid    = fields[0].GetUInt32();
                 int16 event_id = fields[1].GetInt8();
 
-                int32 internal_event_id = mGameEvent.size() + event_id - 1;
+                std::size_t internal_event_id = mGameEvent.size() + event_id - 1;
 
                 CreatureData const* data = sObjectMgr->GetCreatureData(guid);
                 if (!data)
@@ -385,7 +385,7 @@ void GameEventMgr::LoadFromDB()
                     continue;
                 }
 
-                if (internal_event_id < 0 || internal_event_id >= int32(mGameEventCreatureGuids.size()))
+                if (internal_event_id < 0 || internal_event_id >= mGameEventCreatureGuids.size())
                 {
                     SF_LOG_ERROR("sql.sql", "`game_event_creature` game event id (%i) is out of range compared to max event id in `game_event`", event_id);
                     continue;
@@ -422,7 +422,7 @@ void GameEventMgr::LoadFromDB()
                 uint32 guid    = fields[0].GetUInt32();
                 int16 event_id = fields[1].GetInt8();
 
-                int32 internal_event_id = mGameEvent.size() + event_id - 1;
+                std::size_t internal_event_id = mGameEvent.size() + event_id - 1;
 
                 GameObjectData const* data = sObjectMgr->GetGOData(guid);
                 if (!data)
@@ -431,7 +431,7 @@ void GameEventMgr::LoadFromDB()
                     continue;
                 }
 
-                if (internal_event_id < 0 || internal_event_id >= int32(mGameEventGameobjectGuids.size()))
+                if (internal_event_id < 0 || internal_event_id >= mGameEventGameobjectGuids.size())
                 {
                     SF_LOG_ERROR("sql.sql", "`game_event_gameobject` game event id (%i) is out of range compared to max event id in `game_event`", event_id);
                     continue;
@@ -891,9 +891,9 @@ void GameEventMgr::LoadFromDB()
                 uint32 entry   = fields[0].GetUInt32();
                 int16 event_id = fields[1].GetInt8();
 
-                int32 internal_event_id = mGameEvent.size() + event_id - 1;
+                std::size_t internal_event_id = mGameEvent.size() + event_id - 1;
 
-                if (internal_event_id < 0 || internal_event_id >= int32(mGameEventPoolIds.size()))
+                if (internal_event_id < 0 || internal_event_id >= mGameEventPoolIds.size())
                 {
                     SF_LOG_ERROR("sql.sql", "`game_event_pool` game event id (%i) is out of range compared to max event id in `game_event`", event_id);
                     continue;
@@ -1161,9 +1161,9 @@ void GameEventMgr::UpdateEventNPCVendor(uint16 event_id, bool activate)
 
 void GameEventMgr::GameEventSpawn(int16 event_id)
 {
-    int32 internal_event_id = mGameEvent.size() + event_id - 1;
+    std::size_t internal_event_id = mGameEvent.size() + event_id - 1;
 
-    if (internal_event_id < 0 || internal_event_id >= int32(mGameEventCreatureGuids.size()))
+    if (internal_event_id < 0 || internal_event_id >= mGameEventCreatureGuids.size())
     {
         SF_LOG_ERROR("gameevent", "GameEventMgr::GameEventSpawn attempt access to out of range mGameEventCreatureGuids element %i (size: " SIZEFMTD ")",
             internal_event_id, mGameEventCreatureGuids.size());
@@ -1236,11 +1236,11 @@ void GameEventMgr::GameEventSpawn(int16 event_id)
 
 void GameEventMgr::GameEventUnspawn(int16 event_id)
 {
-    int32 internal_event_id = mGameEvent.size() + event_id - 1;
+    std::size_t internal_event_id = mGameEvent.size() + event_id - 1;
 
     if (internal_event_id < 0 || internal_event_id >= int32(mGameEventCreatureGuids.size()))
     {
-        SF_LOG_ERROR("gameevent", "GameEventMgr::GameEventUnspawn attempt access to out of range mGameEventCreatureGuids element %i (size: " SIZEFMTD ")",
+        SF_LOG_ERROR("gameevent", "GameEventMgr::GameEventUnspawn attempt access to out of range mGameEventCreatureGuids element %i (size: %I64u)",
             internal_event_id, mGameEventCreatureGuids.size());
         return;
     }
@@ -1394,7 +1394,7 @@ bool GameEventMgr::hasCreatureActiveEventExcept(uint32 creature_id, uint16 event
     {
         if ((*e_itr) != event_id)
         {
-            int32 internal_event_id = mGameEvent.size() + (*e_itr) - 1;
+            std::size_t internal_event_id = mGameEvent.size() + (*e_itr) - 1;
             for (GuidList::iterator itr = mGameEventCreatureGuids[internal_event_id].begin();
                 itr != mGameEventCreatureGuids[internal_event_id].end();
                 ++ itr)
@@ -1410,7 +1410,7 @@ bool GameEventMgr::hasGameObjectActiveEventExcept(uint32 go_id, uint16 event_id)
     {
         if ((*e_itr) != event_id)
         {
-            int32 internal_event_id = mGameEvent.size() + (*e_itr) - 1;
+            std::size_t internal_event_id = mGameEvent.size() + (*e_itr) - 1;
             for (GuidList::iterator itr = mGameEventGameobjectGuids[internal_event_id].begin();
                 itr != mGameEventGameobjectGuids[internal_event_id].end();
                 ++ itr)

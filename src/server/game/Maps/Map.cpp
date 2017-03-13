@@ -85,7 +85,7 @@ Map::~Map()
 
 bool Map::ExistMap(uint32 mapid, int gx, int gy)
 {
-    int len = sWorld->GetDataPath().length() + strlen("maps/%03u%02u%02u.map") + 1;
+    std::size_t len = sWorld->GetDataPath().length() + strlen("maps/%03u%02u%02u.map") + 1;
     char* fileName = new char[len];
     snprintf(fileName, len, (char *)(sWorld->GetDataPath() + "maps/%03u%02u%02u.map").c_str(), mapid, gx, gy);
 
@@ -190,7 +190,7 @@ void Map::LoadMap(int gx, int gy, bool reload)
 
     // map file name
     char* tmp = NULL;
-    int len = sWorld->GetDataPath().length() + strlen("maps/%03u%02u%02u.map") + 1;
+    std::size_t len = sWorld->GetDataPath().length() + strlen("maps/%03u%02u%02u.map") + 1;
     tmp = new char[len];
     snprintf(tmp, len, (char *)(sWorld->GetDataPath() + "maps/%03u%02u%02u.map").c_str(), GetId(), gx, gy);
     SF_LOG_INFO("maps", "Loading map %s", tmp);

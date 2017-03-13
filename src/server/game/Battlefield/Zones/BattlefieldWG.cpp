@@ -971,8 +971,8 @@ void BattlefieldWG::UpdateVehicleCountWG()
 void BattlefieldWG::UpdateTenacity()
 {
     TeamId team = TEAM_NEUTRAL;
-    uint32 alliancePlayers = m_PlayersInWar[TEAM_ALLIANCE].size();
-    uint32 hordePlayers = m_PlayersInWar[TEAM_HORDE].size();
+    std::size_t alliancePlayers = m_PlayersInWar[TEAM_ALLIANCE].size();
+    std::size_t hordePlayers = m_PlayersInWar[TEAM_HORDE].size();
     int32 newStack = 0;
 
     if (alliancePlayers && hordePlayers)

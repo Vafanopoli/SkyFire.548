@@ -144,7 +144,7 @@ public:
 
     uint32 GetFreeAuctionId();
 
-    void CreateAuctions(uint32 number, SQLTransaction& trans);
+    void CreateAuctions(std::size_t number, SQLTransaction& trans);
     void UpdateAuction(BlackMarketAuction* auction, uint64 newPrice, uint64 requiredIncrement, Player* newBidder);
 
     void BuildBlackMarketRequestItemsResult(WorldPacket& data, uint32 guidLow);

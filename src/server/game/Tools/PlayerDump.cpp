@@ -167,7 +167,7 @@ uint32 registerNewGuid(uint32 oldGuid, std::map<uint32, uint32> &guidMap, uint32
     if (itr != guidMap.end())
         return itr->second;
 
-    uint32 newguid = hiGuid + guidMap.size();
+    uint64 newguid = hiGuid + guidMap.size();
     guidMap[oldGuid] = newguid;
     return newguid;
 }

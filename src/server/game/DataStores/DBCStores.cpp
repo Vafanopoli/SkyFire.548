@@ -905,7 +905,7 @@ void LoadDBCStores(const std::string& dataPath)
 
 const std::string* GetRandomCharacterName(uint8 race, uint8 gender)
 {
-    uint32 size = sGenNameVectoArraysMap[race].stringVectorArray[gender].size();
+    std::size_t size = sGenNameVectoArraysMap[race].stringVectorArray[gender].size();
     uint32 randPos = urand(0, size-1);
 
     return &sGenNameVectoArraysMap[race].stringVectorArray[gender][randPos];

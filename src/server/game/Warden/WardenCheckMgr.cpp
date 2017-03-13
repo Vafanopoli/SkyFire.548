@@ -87,7 +87,7 @@ void WardenCheckMgr::LoadWardenChecks()
         if (checkType == PAGE_CHECK_A || checkType == PAGE_CHECK_B || checkType == DRIVER_CHECK)
         {
             wardenCheck->Data.SetHexStr(data.c_str());
-            int len = data.size() / 2;
+            std::size_t len = data.size() / 2;
 
             if (wardenCheck->Data.GetNumBytes() < len)
             {
@@ -120,7 +120,7 @@ void WardenCheckMgr::LoadWardenChecks()
         {
             WardenCheckResult* wr = new WardenCheckResult();
             wr->Result.SetHexStr(checkResult.c_str());
-            int len = checkResult.size() / 2;
+            std::size_t len = checkResult.size() / 2;
             if (wr->Result.GetNumBytes() < len)
             {
                 uint8 *temp = new uint8[len];

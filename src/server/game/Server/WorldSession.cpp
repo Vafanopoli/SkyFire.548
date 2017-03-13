@@ -871,7 +871,7 @@ void WorldSession::ReadAddonsInfo(WorldPacket &data)
     if (data.rpos() + 4 > data.size())
         return;
 
-    uint32 size;
+    std::size_t size;
     data >> size;
 
     if (!size)
@@ -879,13 +879,13 @@ void WorldSession::ReadAddonsInfo(WorldPacket &data)
 
     if (size > 0xFFFFF)
     {
-        SF_LOG_ERROR("misc", "WorldSession::ReadAddonsInfo addon info too big, size %u", size);
+        SF_LOG_ERROR("misc", "WorldSession::ReadAddonsInfo addon info too big, size %I64u", size);
         return;
     }
 
     uLongf uSize = size;
 
-    uint32 pos = data.rpos();
+    std::size_t pos = data.rpos();
 
     ByteBuffer addonInfo;
     addonInfo.resize(size);

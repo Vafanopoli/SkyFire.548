@@ -32,7 +32,7 @@ void WorldPacket::Compress(z_stream* compressionStream)
     }
 
     Opcodes opcode = Opcodes(uncompressedOpcode | COMPRESSED_OPCODE_MASK);
-    uint32 size = wpos();
+    std::size_t size = wpos();
     uint32 destsize = compressBound(size);
 
     std::vector<uint8> storage(destsize);
@@ -63,7 +63,7 @@ void WorldPacket::Compress(z_stream* compressionStream, WorldPacket const* sourc
     }
 
     Opcodes opcode = Opcodes(uncompressedOpcode | COMPRESSED_OPCODE_MASK);
-    uint32 size = source->size();
+    std::size_t size = source->size();
     uint32 destsize = compressBound(size);
 
     size_t sizePos = 0;

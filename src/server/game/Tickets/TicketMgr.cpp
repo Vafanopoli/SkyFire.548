@@ -425,7 +425,7 @@ void TicketMgr::ShowGmEscalatedList(ChatHandler& handler) const
 
 void TicketMgr::SendGmTicket(WorldSession* session, GmTicket* ticket) const
 {
-    uint32 size = ticket ? (3 + 4 + 1 + 1 + 1 + 4 + ticket->GetMessage().size() + 4 + 4 + 4 + 4) : 1 + 4;
+    std::size_t size = ticket ? (3 + 4 + 1 + 1 + 1 + 4 + ticket->GetMessage().size() + 4 + 4 + 4 + 4) : 1 + 4;
     WorldPacket data(SMSG_GM_TICKET_GET_TICKET, size);
 
     if (ticket)

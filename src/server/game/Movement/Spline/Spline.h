@@ -29,7 +29,7 @@ namespace Movement {
 class SplineBase
 {
 public:
-    typedef int index_type;
+    typedef std::size_t index_type;
     typedef std::vector<Vector3> ControlArray;
 
     enum EvaluationMode

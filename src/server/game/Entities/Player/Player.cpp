@@ -21558,7 +21558,7 @@ void Player::PetSpellInitialize()
 
     uint32 spellCount = 0;
     uint32 spellHistoryCount = 0;
-    uint32 cooldownCount = pet->m_CreatureSpellCooldowns.size() + pet->m_CreatureCategoryCooldowns.size();
+    std::size_t cooldownCount = pet->m_CreatureSpellCooldowns.size() + pet->m_CreatureCategoryCooldowns.size();
 
     WorldPacket data(SMSG_PET_SPELLS_MESSAGE, 8+2+4+4+4*MAX_UNIT_ACTION_BAR_INDEX+1+1);
 
@@ -21702,7 +21702,7 @@ void Player::VehicleSpellInitialize()
     if (!vehicle)
         return;
 
-    uint8 cooldownCount = vehicle->m_CreatureSpellCooldowns.size();
+    std::size_t cooldownCount = vehicle->m_CreatureSpellCooldowns.size();
     ObjectGuid VehicleGuid = vehicle->GetGUID();
 
     WorldPacket data(SMSG_PET_SPELLS_MESSAGE, 8 + 2 + 4 + 4 + 4 * 10 + 1 + 1 + cooldownCount * (4 + 2 + 4 + 4));
@@ -27325,7 +27325,7 @@ void Player::SendClearCooldown(uint32 spell_id, Unit* target)
 
 void Player::SendClearAllCooldowns(Unit* target)
 {
-    uint32 spellCount = m_spellCooldowns.size();
+    std::size_t spellCount = m_spellCooldowns.size();
     ObjectGuid guid = target ? target->GetGUID() : 0;
 
     WorldPacket data(SMSG_CLEAR_COOLDOWNS, 1 + 8 + 3 + (spellCount * 4));
@@ -29016,8 +29016,8 @@ bool Player::IsWithinResearchDigsite(ResearchDigsite* digsite)
     float x = GetPositionX();
     float y = GetPositionY();
     bool result = false;
-    int j = polygon->size() - 1;
-    for (uint32 i = 0; i < polygon->size(); j = i++)
+    std::size_t j = polygon->size() - 1;
+    for (std::size_t i = 0; i < polygon->size(); j = i++)
     {
         if ((polygon->at(i).second < y && polygon->at(j).second >= y || polygon->at(j).second < y && polygon->at(i).second >= y) && (polygon->at(i).first <= x || polygon->at(j).first <= x))
             result ^= (polygon->at(i).first + (y - polygon->at(i).second) / (polygon->at(j).second - polygon->at(i).second) * (polygon->at(j).first - polygon->at(i).first) < x);

@@ -347,7 +347,7 @@ LfgCompatibility LFGQueue::CheckCompatibility(LfgGuidList check)
     }
 
     // Check if more than one LFG group and number of players joining
-    uint8 numPlayers = 0;
+    std::size_t numPlayers = 0;
     uint8 numLfgGroups = 0;
     for (LfgGuidList::const_iterator it = check.begin(); it != check.end() && numLfgGroups < 2 && numPlayers <= MAXGROUPSIZE; ++it)
     {
@@ -424,9 +424,9 @@ LfgCompatibility LFGQueue::CheckCompatibility(LfgGuidList check)
             }
         }
 
-        if (uint8 playersize = numPlayers - proposalRoles.size())
+        if (std::size_t playersize = numPlayers - proposalRoles.size())
         {
-            SF_LOG_DEBUG("lfg", "LFGQueue::CheckCompatibility: (%s) not compatible, %u players are ignoring each other", strGuids.c_str(), playersize);
+            SF_LOG_DEBUG("lfg", "LFGQueue::CheckCompatibility: (%s) not compatible, %I64u players are ignoring each other", strGuids.c_str(), playersize);
             SetCompatibles(strGuids, LFG_INCOMPATIBLES_HAS_IGNORES);
             return LFG_INCOMPATIBLES_HAS_IGNORES;
         }

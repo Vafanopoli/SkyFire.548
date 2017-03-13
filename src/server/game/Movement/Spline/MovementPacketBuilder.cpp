@@ -119,7 +119,7 @@ namespace Movement
 
     void WriteLinearPath(Spline<int32> const& spline, ByteBuffer& data)
     {
-        uint32 last_idx = spline.getPointCount() - 3;
+        std::size_t last_idx = spline.getPointCount() - 3;
         Vector3 const* real_path = &spline.getPoint(1);
 
         if (last_idx > 0)
@@ -127,7 +127,7 @@ namespace Movement
             Vector3 middle = (real_path[0] + real_path[last_idx]) / 2.f;
             Vector3 offset;
             // first and last points already appended
-            for (uint32 i = 0; i < last_idx; ++i)
+            for (std::size_t i = 0; i < last_idx; ++i)
             {
                 offset = middle - real_path[i];
                 data.appendPackXYZ(offset.x, offset.y, offset.z);
@@ -185,7 +185,7 @@ namespace Movement
         data.WriteBit(1);
         data.WriteBit(1);
 
-        uint32 uncompressedSplineCount = moveSpline.splineflags & MoveSplineFlag::UncompressedPath ? moveSpline.splineflags.cyclic ? moveSpline.spline.getPointCount() - 3 : moveSpline.spline.getPointCount() - 2 : 1;
+        std::size_t uncompressedSplineCount = moveSpline.splineflags & MoveSplineFlag::UncompressedPath ? moveSpline.splineflags.cyclic ? moveSpline.spline.getPointCount() - 3 : moveSpline.spline.getPointCount() - 2 : 1;
         data.WriteBits(uncompressedSplineCount,  20);
 
         data.WriteBit(!moveSpline.splineflags.raw());
@@ -199,7 +199,7 @@ namespace Movement
         data.WriteBit(1);
         data.WriteBit(guid[5]);
 
-        int32 compressedSplineCount = moveSpline.splineflags & MoveSplineFlag::UncompressedPath ? 0 : moveSpline.spline.getPointCount() - 3;
+        std::size_t compressedSplineCount = moveSpline.splineflags & MoveSplineFlag::UncompressedPath ? 0 : moveSpline.spline.getPointCount() - 3;
         data.WriteBits(compressedSplineCount, 22); // WP count
 
         data.WriteBit(guid[6]);
@@ -308,8 +308,8 @@ namespace Movement
             data << float(1.f);                             // splineInfo.duration_mod_next; added in 3.1
             data << float(1.f);                             // splineInfo.duration_mod; added in 3.1
 
-            uint32 nodes = moveSpline.getPath().size();
-            for (uint32 i = 0; i < nodes; ++i)
+            std::size_t nodes = moveSpline.getPath().size();
+            for (std::size_t i = 0; i < nodes; ++i)
             {
                 data << float(moveSpline.getPath()[i].x);
                 data << float(moveSpline.getPath()[i].z);

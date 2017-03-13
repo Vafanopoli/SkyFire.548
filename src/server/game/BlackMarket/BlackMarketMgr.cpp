@@ -200,7 +200,7 @@ void BlackMarketMgr::Update()
     }
 
     // Add New Auctions
-    int32 add = sWorld->getIntConfig(CONFIG_BLACK_MARKET_MAX_AUCTIONS) - _auctions.size();
+    std::size_t add = sWorld->getIntConfig(CONFIG_BLACK_MARKET_MAX_AUCTIONS) - _auctions.size();
     if (add > 0)
         CreateAuctions(add, trans);
 
@@ -214,7 +214,7 @@ uint32 BlackMarketMgr::GetFreeAuctionId()
     return newId;
 }
 
-void BlackMarketMgr::CreateAuctions(uint32 number, SQLTransaction& trans)
+void BlackMarketMgr::CreateAuctions(std::size_t number, SQLTransaction& trans)
 {
     if (_templates.empty())
         return;
