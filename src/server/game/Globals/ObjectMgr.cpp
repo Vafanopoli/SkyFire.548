@@ -7956,6 +7956,99 @@ void ObjectMgr::LoadTrainerSpell()
     SF_LOG_INFO("server.loading", ">> Loaded %d Trainers in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
 }
 
+void ObjectMgr::LoadTrainerSpellGroups()
+{
+	uint32 oldMSTime = getMSTime();
+
+	// For reload case
+	_cacheTrainerSpellGroupStore.clear();
+
+	QueryResult result = WorldDatabase.Query("SELECT a.entry, a.spell, a.spellcost, a.reqskill, a.reqskillvalue, a.reqlevel FROM npc_trainer AS a "
+		"WHERE a.entry >= 200000");
+
+	if (!result)
+	{
+		SF_LOG_ERROR("server.loading", ">>  Loaded 0 Trainer Spell Groups. DB table `npc_trainer` has no groups defined!");
+
+		return;
+	}
+
+	uint32 count = 0;
+
+	do
+	{
+		Field* fields = result->Fetch();
+
+		uint32 entry = fields[0].GetUInt32();
+		uint32 spell = fields[1].GetUInt32();
+		uint32 spellCost = fields[2].GetUInt32();
+		uint32 reqSkill = fields[3].GetUInt16();
+		uint32 reqSkillValue = fields[4].GetUInt16();
+		uint32 reqLevel = fields[5].GetUInt8();
+
+		SpellInfo const* spellinfo = sSpellMgr->GetSpellInfo(spell);
+		if (!spellinfo)
+		{
+			SF_LOG_ERROR("sql.sql", "Table `npc_trainer` contains an entry (Entry: %u) for a non-existing spell (Spell: %u), ignoring", entry, spell);
+			return;
+		}
+
+		if (!SpellMgr::IsSpellValid(spellinfo))
+		{
+			SF_LOG_ERROR("sql.sql", "Table `npc_trainer` contains an entry (Entry: %u) for a broken spell (Spell: %u), ignoring", entry, spell);
+			return;
+		}
+
+		if (GetTalentSpellCost(spell))
+		{
+			SF_LOG_ERROR("sql.sql", "Table `npc_trainer` contains an entry (Entry: %u) for a non-existing spell (Spell: %u) which is a talent, ignoring", entry, spell);
+			return;
+		}
+
+		TrainerSpellData& data = _cacheTrainerSpellGroupStore[entry];
+
+		TrainerSpell& trainerSpell = data.spellList[spell];
+		trainerSpell.spell = spell;
+		trainerSpell.spellCost = spellCost;
+		trainerSpell.reqSkill = reqSkill;
+		trainerSpell.reqSkillValue = reqSkillValue;
+		trainerSpell.reqLevel = reqLevel;
+
+		if (!trainerSpell.reqLevel)
+			trainerSpell.reqLevel = spellinfo->SpellLevel;
+
+		// calculate learned spell for profession case when stored cast-spell
+		trainerSpell.learnedSpell[0] = spell;
+		for (uint8 i = 0; i < MAX_SPELL_EFFECTS; ++i)
+		{
+			if (spellinfo->Effects[i].Effect != SPELL_EFFECT_LEARN_SPELL)
+				continue;
+			if (trainerSpell.learnedSpell[0] == spell)
+				trainerSpell.learnedSpell[0] = 0;
+			// player must be able to cast spell on himself
+			if (spellinfo->Effects[i].TargetA.GetTarget() != 0 && spellinfo->Effects[i].TargetA.GetTarget() != TARGET_UNIT_TARGET_ALLY
+				&& spellinfo->Effects[i].TargetA.GetTarget() != TARGET_UNIT_TARGET_ANY && spellinfo->Effects[i].TargetA.GetTarget() != TARGET_UNIT_CASTER)
+			{
+				SF_LOG_ERROR("sql.sql", "Table `npc_trainer` has spell %u for trainer entry %u with learn effect which has incorrect target type, ignoring learn effect!", spell, entry);
+				continue;
+			}
+
+			trainerSpell.learnedSpell[i] = spellinfo->Effects[i].TriggerSpell;
+
+			if (trainerSpell.learnedSpell[i])
+			{
+				SpellInfo const* learnedSpellInfo = sSpellMgr->GetSpellInfo(trainerSpell.learnedSpell[i]);
+				if (learnedSpellInfo && learnedSpellInfo->IsProfession())
+					data.trainerType = 2;
+			}
+		}
+
+		++count;
+	} while (result->NextRow());
+
+	SF_LOG_INFO("server.loading", ">> Loaded %d Trainer Spell Group entries in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+}
+
 int ObjectMgr::LoadReferenceVendor(int32 vendor, int32 item, uint8 type, std::set<uint32> *skip_vendors)
 {
     // find all items from the reference vendor

@@ -1461,9 +1461,11 @@ void Player::HandleDrowning(uint32 time_diff)
                     uint32 damage = GetMaxHealth() / 5 + urand(0, getLevel()-1);
                     EnvironmentalDamage(DAMAGE_EXHAUSTED, damage);
                 }
-                else if (HasFlag(PLAYER_FIELD_PLAYER_FLAGS, PLAYER_FLAGS_GHOST))       // Teleport ghost to graveyard
-                    RepopAtGraveyard();
-            }
+				else if (HasFlag(PLAYER_FIELD_PLAYER_FLAGS, PLAYER_FLAGS_GHOST))       // Teleport ghost to graveyard
+				{
+					RepopAtGraveyard();
+				}
+			}
             else if (!(m_MirrorTimerFlagsLast & UNDERWARER_INDARKWATER))
                 SendMirrorTimer(FATIGUE_TIMER, getMaxTimer(FATIGUE_TIMER), m_MirrorTimer[FATIGUE_TIMER], -1);
         }
@@ -1846,8 +1848,8 @@ void Player::Update(uint32 p_time)
         if (p_time >= m_deathTimer)
         {
             m_deathTimer = 0;
-            BuildPlayerRepop();
-            RepopAtGraveyard();
+			BuildPlayerRepop();
+			RepopAtGraveyard();
         }
         else
             m_deathTimer -= p_time;
@@ -9283,8 +9285,8 @@ void Player::RemovedInsignia(Player* looterPlr)
     if (m_deathTimer > 0)
     {
         m_deathTimer = 0;
-        BuildPlayerRepop();
-        RepopAtGraveyard();
+		BuildPlayerRepop();
+		RepopAtGraveyard();
     }
 
     // We have to convert player corpse to bones, not to be able to resurrect there
@@ -15203,24 +15205,14 @@ void Player::SendPreparedGossip(WorldObject* source)
     if (!source)
         return;
 
-    if (source->GetTypeId() == TYPEID_UNIT)
-    {
-        // in case no gossip flag and quest menu not empty, open quest menu (client expect gossip menu with this flag)
-        if (!source->ToCreature()->HasFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP) && !PlayerTalkClass->GetQuestMenu().Empty())
-        {
-            SendPreparedQuest(source->GetGUID());
-            return;
-        }
-    }
-    else if (source->GetTypeId() == TYPEID_GAMEOBJECT)
-    {
-        // probably need to find a better way here
-        if (!PlayerTalkClass->GetGossipMenu().GetMenuId() && !PlayerTalkClass->GetQuestMenu().Empty())
-        {
-            SendPreparedQuest(source->GetGUID());
-            return;
-        }
-    }
+	if (source->GetTypeId() == TYPEID_UNIT || source->GetTypeId() == TYPEID_GAMEOBJECT)
+	{
+		if (!PlayerTalkClass->GetQuestMenu().Empty())
+		{
+			SendPreparedQuest(source->GetGUID());
+			return;
+		}
+	}
 
     // in case non empty gossip menu (that not included quests list size) show it
     // (quest entries from quest menu will be included in list)
@@ -15303,7 +15295,7 @@ void Player::OnGossipSelect(WorldObject* source, uint32 gossipListId, uint32 men
             GetSession()->SendStablePet(guid);
             break;
         case GOSSIP_OPTION_TRAINER:
-            GetSession()->SendTrainerList(guid);
+            GetSession()->SendTrainerList(guid, menuItemData->GossipActionMenuId);
             break;
         case GOSSIP_OPTION_LEARNDUALSPEC:
             if (GetSpecsCount() == 1 && getLevel() >= sWorld->getIntConfig(CONFIG_MIN_DUALSPEC_LEVEL))
@@ -16551,33 +16543,38 @@ bool Player::SatisfyQuestNextChain(Quest const* qInfo, bool msg)
 
 bool Player::SatisfyQuestPrevChain(Quest const* qInfo, bool msg)
 {
-    // No previous quest in chain
-    if (qInfo->prevChainQuests.empty())
-        return true;
+	// No previous quest in chain
+	if (qInfo->prevChainQuests.empty())
+		return true;
 
-    for (Quest::PrevChainQuests::const_iterator iter = qInfo->prevChainQuests.begin(); iter != qInfo->prevChainQuests.end(); ++iter)
-    {
-        QuestStatusMap::const_iterator itr = m_QuestStatus.find(*iter);
+	for (Quest::PrevChainQuests::const_iterator iter = qInfo->prevChainQuests.begin(); iter != qInfo->prevChainQuests.end(); ++iter)
+	{
+		QuestStatusMap::const_iterator itr = m_QuestStatus.find(*iter);
 
-        // If any of the previous quests in chain active, return false
-        if (itr != m_QuestStatus.end() && itr->second.Status != QUEST_STATUS_NONE)
-        {
-            if (msg)
-            {
-                SendCanTakeQuestResponse(INVALIDREASON_DONT_HAVE_REQ);
-                SF_LOG_DEBUG("misc", "SatisfyQuestNextChain: Sent INVALIDREASON_DONT_HAVE_REQ (questId: %u) because player already did or started next quest in chain.", qInfo->GetQuestId());
-            }
-            return false;
-        }
+		// If any of the previous quests in chain active, return false
+		if (itr != m_QuestStatus.end() && itr->second.Status != QUEST_STATUS_NONE)
+		{
+			if (msg)
+			{
+				SendCanTakeQuestResponse(INVALIDREASON_DONT_HAVE_REQ);
+				SF_LOG_DEBUG("misc", "SatisfyQuestNextChain: Sent INVALIDREASON_DONT_HAVE_REQ (questId: %u) because player already did or started next quest in chain.", qInfo->GetQuestId());
+			}
+			return false;
+		}
 
-        // check for all quests further down the chain
-        // only necessary if there are quest chains with more than one quest that can be skipped
-        //if (!SatisfyQuestPrevChain(prevId, msg))
-        //    return false;
-    }
+		// check for all quests further down the chain
+		// only necessary if there are quest chains with more than one quest that can be skipped
+		Quest const* prev = sObjectMgr->GetQuestTemplate(*iter);
 
-    // No previous quest in chain active
-    return true;
+		if (!prev)
+			continue;
+	
+		if (!SatisfyQuestPrevChain(prev, msg))
+			return false;
+	}
+
+	// No previous quest in chain active
+	return true;
 }
 
 bool Player::SatisfyQuestDay(Quest const* qInfo, bool msg)

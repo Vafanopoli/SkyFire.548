@@ -1008,7 +1008,8 @@ class ObjectMgr
 
         void LoadVendors();
         void LoadTrainerSpell();
-        void AddSpellToTrainer(uint32 entry, uint32 spell, uint32 spellCost, uint32 reqSkill, uint32 reqSkillValue, uint32 reqLevel);
+		void LoadTrainerSpellGroups();
+		void AddSpellToTrainer(uint32 entry, uint32 spell, uint32 spellCost, uint32 reqSkill, uint32 reqSkillValue, uint32 reqLevel);
 
         void LoadPhaseDefinitions();
         void LoadSpellPhaseInfo();
@@ -1219,7 +1220,16 @@ class ObjectMgr
             return &iter->second;
         }
 
-        VendorItemData const* GetNpcVendorItemList(uint32 entry) const
+		TrainerSpellData const* GetNpcTrainerSpellGroup(uint32 group) const
+		{
+			CacheTrainerSpellContainer::const_iterator  iter = _cacheTrainerSpellGroupStore.find(group);
+			if (iter == _cacheTrainerSpellGroupStore.end())
+				return NULL;
+
+			return &iter->second;
+		}
+
+		VendorItemData const* GetNpcVendorItemList(uint32 entry) const
         {
             CacheVendorItemContainer::const_iterator iter = _cacheVendorItemStore.find(entry);
             if (iter == _cacheVendorItemStore.end())
@@ -1512,6 +1522,7 @@ class ObjectMgr
 
         CacheVendorItemContainer _cacheVendorItemStore;
         CacheTrainerSpellContainer _cacheTrainerSpellStore;
+		CacheTrainerSpellContainer _cacheTrainerSpellGroupStore;
 
         GraveyardOrientationContainer _graveyardOrientations;
 

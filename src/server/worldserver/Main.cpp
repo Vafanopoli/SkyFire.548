@@ -49,6 +49,8 @@ char serviceDescription[] = "SkyFire World of Warcraft emulator world service";
  *  2 - paused
  */
 int m_ServiceStatus = -1;
+
+extern "C" { FILE __iob_func[3] = { *stdin,*stdout,*stderr }; }
 #endif
 
 WorldDatabaseWorkerPool WorldDatabase;                      ///< Accessor to the world database

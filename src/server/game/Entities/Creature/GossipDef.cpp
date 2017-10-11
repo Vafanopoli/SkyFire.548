@@ -216,7 +216,7 @@ void PlayerMenu::SendGossipMenu(uint32 titleTextId, uint64 objectGUID) const
 
     data.WriteBit(guid[3]);
     data.WriteBit(guid[1]);
-    data.FlushBits();
+    //data.FlushBits();
 
     for (uint8 i = 0; i < _questMenu.GetMenuItemCount(); ++i)
     {
@@ -517,7 +517,7 @@ void PlayerMenu::SendQuestGiverQuestDetails(Quest const* quest, uint64 npcGUID, 
     data << uint32(rewItemDisplayId[3]);
     data << uint32(quest->RewardChoiceItemId[0]);
     data << uint32(quest->RewardChoiceItemCount[3]);
-    data << uint32(0);                                      // model Id, usually used in wanted or boss quests
+    data << uint32(quest->GetQuestGiverPortrait());         // model Id, usually used in wanted or boss quests
     data << uint32(rewChoiceItemDisplayId[3]);
     data << uint32(quest->RewardItemId[0]);
     data << uint32(quest->GetQuestId());

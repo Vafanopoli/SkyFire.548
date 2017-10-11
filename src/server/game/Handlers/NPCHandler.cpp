@@ -161,16 +161,16 @@ void WorldSession::HandleTrainerListOpcode(WorldPacket& recvData)
     recvData.ReadByteSeq(guid[2]);
     recvData.ReadByteSeq(guid[4]);
 
-    SendTrainerList(guid);
+    SendTrainerList(guid, 0);
 }
 
-void WorldSession::SendTrainerList(uint64 guid)
+void WorldSession::SendTrainerList(uint64 guid, uint32 listref)
 {
     std::string str = GetSkyFireString(LANG_NPC_TAINER_HELLO);
-    SendTrainerList(guid, str);
+	SendTrainerList(guid, listref, str);
 }
 
-void WorldSession::SendTrainerList(uint64 guid, const std::string& strTitle)
+void WorldSession::SendTrainerList(uint64 guid, uint32 listref, const std::string& strTitle)
 {
     SF_LOG_DEBUG("network", "WORLD: SendTrainerList");
 
@@ -193,13 +193,26 @@ void WorldSession::SendTrainerList(uint64 guid, const std::string& strTitle)
         return;
     }
 
-    TrainerSpellData const* trainer_spells = unit->GetTrainerSpells();
-    if (!trainer_spells)
-    {
-        SF_LOG_DEBUG("network", "WORLD: SendTrainerList - Training spells not found for creature (GUID: %u Entry: %u)",
-            GUID_LOPART(guid), unit->GetEntry());
-        return;
-    }
+	TrainerSpellData const* trainer_spells = NULL;
+	if (listref) {
+		trainer_spells = sObjectMgr->GetNpcTrainerSpellGroup(listref);
+		if (!trainer_spells)
+		{
+			SF_LOG_DEBUG("network", "WORLD: SendTrainerList - Training spells not found for creature (GUID: %u Entry: %u)",
+				GUID_LOPART(guid), unit->GetEntry());
+			return;
+		}
+	}
+	else
+	{
+		trainer_spells = unit->GetTrainerSpells();
+		if (!trainer_spells)
+		{
+			SF_LOG_DEBUG("network", "WORLD: SendTrainerList - Training spells not found for creature (GUID: %u Entry: %u)",
+				GUID_LOPART(guid), unit->GetEntry());
+			return;
+		}
+	}
 
     ObjectGuid oGuid = guid;
 
@@ -509,6 +522,12 @@ void WorldSession::HandleGossipHelloOpcode(WorldPacket& recvData)
 void WorldSession::HandleSpiritHealerActivateOpcode(WorldPacket& recvData)
 {
     SF_LOG_DEBUG("network", "WORLD: CMSG_SPIRIT_HEALER_ACTIVATE");
+
+	// Permanent death = no spirit healers
+	if (sWorld->getBoolConfig(CONFIG_PERMANENT_DEATH))
+	{
+		return;
+	}
 
     ObjectGuid UnitGUID;
 

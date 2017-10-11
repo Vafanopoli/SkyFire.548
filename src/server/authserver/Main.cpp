@@ -48,6 +48,10 @@
 #define PROCESS_HIGH_PRIORITY -15 // [-20, 19], default is 0
 #endif
 
+#ifdef _WIN32
+extern "C" { FILE __iob_func[3] = { *stdin,*stdout,*stderr }; }
+#endif
+
 #ifndef _SKYFIRE_REALM_CONFIG
 # define _SKYFIRE_REALM_CONFIG  "authserver.conf"
 #endif

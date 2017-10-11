@@ -348,8 +348,8 @@ class WorldSession
 
         void SendRealmNameQueryOpcode(uint32 realmId);
 
-        void SendTrainerList(uint64 guid);
-        void SendTrainerList(uint64 guid, std::string const& strTitle);
+        void SendTrainerList(uint64 guid, uint32 reflist);
+        void SendTrainerList(uint64 guid, uint32 reflist, std::string const& strTitle);
         void SendListInventory(uint64 guid);
         void SendShowBank(ObjectGuid guid);
         void SendTabardVendorActivate(uint64 guid);

@@ -1132,6 +1132,9 @@ void World::LoadConfigSettings(bool reload)
     m_int_configs[CONFIG_BOOST_START_MONEY] = sConfigMgr->GetIntDefault("Boost.StartMoney", 1500000);
     m_int_configs[CONFIG_BOOST_START_LEVEL] = sConfigMgr->GetIntDefault("Boost.StartLevel", 90);
 
+	// permanent death
+	m_bool_configs[CONFIG_PERMANENT_DEATH] = sConfigMgr->GetBoolDefault("Death.Permanent", false);
+
     //visibility on continents
     m_MaxVisibleDistanceOnContinents = sConfigMgr->GetFloatDefault("Visibility.Distance.Continents", DEFAULT_VISIBILITY_DISTANCE);
     if (m_MaxVisibleDistanceOnContinents < 45*sWorld->getRate(RATE_CREATURE_AGGRO))
@@ -1756,7 +1759,10 @@ void World::SetInitialWorldSettings()
     SF_LOG_INFO("server.loading", "Loading Trainers...");
     sObjectMgr->LoadTrainerSpell();                              // must be after load CreatureTemplate
 
-    SF_LOG_INFO("server.loading", "Loading Waypoints...");
+	SF_LOG_INFO("server.loading", "Loading Trainer Spell Groups...");
+	sObjectMgr->LoadTrainerSpellGroups();                        // must be after load CreatureTemplate
+	
+	SF_LOG_INFO("server.loading", "Loading Waypoints...");
     sWaypointMgr->Load();
 
     SF_LOG_INFO("server.loading", "Loading SmartAI Waypoints...");

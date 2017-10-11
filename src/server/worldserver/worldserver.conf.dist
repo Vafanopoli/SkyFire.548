@@ -34,6 +34,7 @@ ConfVersion=2017091000
 #    BLACK MARKET SETTINGS
 #    PACKET SPOOF PROTECTION SETTINGS
 #    CHARACTER BOOST SETTINGS
+#    PERMANENT DEATH SETTINGS
 #
 ###################################################################################################
 
@@ -2707,9 +2708,11 @@ UI.ShowQuestLevelsInDialogs = 0
 #
 
 Appender.Console=1,3,0
-Appender.Server=2,2,0,Server.log,w
-Appender.GM=2,2,15,gm/gm_%s.log
-Appender.DBErrors=2,2,0,DBErrors.log
+Appender.DBErrors=2,1,0,DBErrors.log,w
+Appender.root=2,1,9,root.log,w
+Appender.Server=2,1,9,Server.log,w
+Appender.LFG=2,1,9,LFG.log,w
+Appender.GM=2,1,15,gm_%s.log,w
 
 #  Logger config values: Given a logger "name"
 #    Logger.name
@@ -2729,10 +2732,11 @@ Appender.DBErrors=2,2,0,DBErrors.log
 #                     (Using spaces as separator).
 #
 
-Logger.root=5,Console Server
-Logger.server=3,Console Server
-Logger.commands.gm=3,Console GM
-Logger.sql.sql=5,Console DBErrors
+Logger.sql.sql=5,DBErrors
+Logger.root=1,root
+Logger.server=1,Console Server
+Logger.lfg=1,LFG
+Logger.commands.gm=1,GM
 
 #Logger.achievement=3,Console Server
 #Logger.auctionHouse=3,Console Server
@@ -3055,6 +3059,20 @@ Boost.StartMoney = 1500000
 #
 
 Boost.StartLevel = 90
+
+#
+###################################################################################################
+
+###################################################################################################
+# CHARACTER PERMANENT DEATH SETTINGS
+#
+#    Death.Permanent
+#        Description: Characters will be banned when they die for any reason.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+#
+
+Death.Permanent = 0
 
 #
 ###################################################################################################

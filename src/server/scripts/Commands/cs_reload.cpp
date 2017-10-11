@@ -777,7 +777,8 @@ public:
     {
         SF_LOG_INFO("misc", "Re-Loading `npc_trainer` Table!");
         sObjectMgr->LoadTrainerSpell();
-        handler->SendGlobalGMSysMessage("DB table `npc_trainer` reloaded.");
+		sObjectMgr->LoadTrainerSpellGroups();
+		handler->SendGlobalGMSysMessage("DB table `npc_trainer` reloaded.");
         return true;
     }
 

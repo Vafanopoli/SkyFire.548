@@ -434,7 +434,7 @@ public:
                 player->GetSession()->SendListInventory(creature->GetGUID());
                 break;
             case GOSSIP_ACTION_TRAIN:
-                player->GetSession()->SendTrainerList(creature->GetGUID());
+                player->GetSession()->SendTrainerList(creature->GetGUID(), 0);
                 break;
                 //Learn Alchemy
             case GOSSIP_ACTION_INFO_DEF + 1:
@@ -622,7 +622,7 @@ public:
                 player->GetSession()->SendListInventory(creature->GetGUID());
                 break;
             case GOSSIP_ACTION_TRAIN:
-                player->GetSession()->SendTrainerList(creature->GetGUID());
+                player->GetSession()->SendTrainerList(creature->GetGUID(), 0);
                 break;
                 //Learn Armor/Weapon
             case GOSSIP_ACTION_INFO_DEF + 1:
@@ -932,7 +932,7 @@ public:
                 player->GetSession()->SendListInventory(creature->GetGUID());
                 break;
             case GOSSIP_ACTION_TRAIN:
-                player->GetSession()->SendTrainerList(creature->GetGUID());
+                player->GetSession()->SendTrainerList(creature->GetGUID(), 0);
                 break;
                 //Unlearn Leather
             case GOSSIP_ACTION_INFO_DEF + 1:
@@ -1062,7 +1062,7 @@ public:
                 player->GetSession()->SendListInventory(creature->GetGUID());
                 break;
             case GOSSIP_ACTION_TRAIN:
-                player->GetSession()->SendTrainerList(creature->GetGUID());
+                player->GetSession()->SendTrainerList(creature->GetGUID(), 0);
                 break;
                 //Learn Tailor
             case GOSSIP_ACTION_INFO_DEF + 1:

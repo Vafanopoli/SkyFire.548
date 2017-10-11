@@ -1294,7 +1294,7 @@ public:
                 player->CastSpell(player, 21100, false);
                 break;
             case GOSSIP_ACTION_TRAIN:
-                player->GetSession()->SendTrainerList(creature->GetGUID());
+                player->GetSession()->SendTrainerList(creature->GetGUID(), 0);
                 break;
             case GOSSIP_OPTION_UNLEARNTALENTS:
                 player->CLOSE_GOSSIP_MENU();

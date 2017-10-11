@@ -488,17 +488,17 @@ void WorldSession::LogoutPlayer(bool save)
         if (_player->GetDeathTimer())
         {
             _player->getHostileRefManager().deleteReferences();
-            _player->BuildPlayerRepop();
-            _player->RepopAtGraveyard();
+			_player->BuildPlayerRepop();
+			_player->RepopAtGraveyard();
         }
         else if (_player->HasAuraType(SPELL_AURA_SPIRIT_OF_REDEMPTION))
         {
             // this will kill character by SPELL_AURA_SPIRIT_OF_REDEMPTION
             _player->RemoveAurasByType(SPELL_AURA_MOD_SHAPESHIFT);
             _player->KillPlayer();
-            _player->BuildPlayerRepop();
-            _player->RepopAtGraveyard();
-        }
+			_player->BuildPlayerRepop();
+			_player->RepopAtGraveyard();
+		}
         else if (_player->HasPendingBind())
         {
             _player->RepopAtGraveyard();
